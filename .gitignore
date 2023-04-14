@@ -15,9 +15,6 @@ _deps
 # Dependencies directory
 dep
 
-# Output directory
-bin
-
 # MacOS files
 .DS_Store
 
