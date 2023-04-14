@@ -12,5 +12,5 @@ set_target_properties(server-core
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
-find_package(gRPC CONFIG REQUIRED)
-target_link_libraries(server-core gRPC::grpc++)
+find_package(Boost REQUIRED)
+target_link_libraries(server-core Boost)

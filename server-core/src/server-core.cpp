@@ -2,6 +2,7 @@
 // (C) Martin Alebachew, 2023
 
 #include <iostream>
+#include <boost/asio.h>
 
 int main(int argc, const char * argv[]) {
     std::cout << "Lighthouse Server Core" << std::endl;
