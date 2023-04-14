@@ -1,3 +1,9 @@
+# Dependencies directory
+dep
+
+# MacOS files
+.DS_Store
+
 # Prerequisites
 *.d
 
