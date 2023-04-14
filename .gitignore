@@ -1,5 +1,21 @@
+# CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
 # Dependencies directory
 dep
+
+# Output directory
+bin
 
 # MacOS files
 .DS_Store
