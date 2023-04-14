@@ -7,4 +7,8 @@ project(lighthouse-core C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 
+include_directories(${Boost_INCLUDE_DIRS})
+find_package(Boost REQUIRED COMPONENTS system)
+
 add_executable(core src/main.cpp)
+target_link_libraries(core ${Boost_SYSTEM_LIBRARY})
