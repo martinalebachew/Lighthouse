@@ -1,4 +1,4 @@
-// main.cpp
+// server-core.cpp
 // (C) Martin Alebachew, 2023
 
 #include <iostream>
