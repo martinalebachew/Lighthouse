@@ -1,4 +1,4 @@
-// main.cpp
+// core.cpp
 // (C) Martin Alebachew, 2023
 
 #include <boost/asio.hpp>
