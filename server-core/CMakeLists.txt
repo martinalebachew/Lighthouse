@@ -12,5 +12,3 @@ set(used_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_
 
 add_executable(server-core "src/server-core.cpp")
 target_link_libraries(server-core ${used_libs})
-
-add_executable(ndr-test "src/ndr-test.cpp")
