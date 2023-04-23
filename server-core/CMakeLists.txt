@@ -10,5 +10,7 @@ find_package(Boost REQUIRED COMPONENTS system)  # thread regex
 
 set(used_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY}
 
-add_executable(server-core "src/server-core.cpp")
+add_executable(server-core src/server-core.cpp)
+target_sources(server-core PRIVATE src/RPC/control.cpp)
+
 target_link_libraries(server-core ${used_libs})
