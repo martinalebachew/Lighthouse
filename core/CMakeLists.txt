@@ -11,4 +11,5 @@ include_directories(${Boost_INCLUDE_DIRS})
 find_package(Boost REQUIRED COMPONENTS system)
 
 add_executable(core src/core.cpp)
+target_sources(core PRIVATE src/rpc/control.cpp)
 target_link_libraries(core ${Boost_SYSTEM_LIBRARY})
