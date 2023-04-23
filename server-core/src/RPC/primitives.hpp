@@ -41,8 +41,6 @@ typedef int64_t CRAY_DOUBLE;
 typedef int32_t IBM_SHORT;
 typedef int64_t IBM_LONG;
 
-typedef char RAW_BYTE;
-
 
 // C706 §12.6.3.1 Declarations
 typedef SMALL int8;
@@ -55,4 +53,4 @@ typedef UNSIGNED_SHORT u_int16;
 typedef UNSIGNED_LONG u_int32;
 typedef UNSIGNED_HYPER u_int64;
 
-typedef RAW_BYTE byte;
+typedef char byte;
