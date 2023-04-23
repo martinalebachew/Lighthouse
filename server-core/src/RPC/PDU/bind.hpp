@@ -6,14 +6,13 @@ This files defines the RPC bind PDU wrapper class.
 */
 
 #pragma once
+#include <cstring>
 #include "../primitives.hpp"
 #include "../presentation.hpp"
 #include "type.hpp"
 
 namespace RPC::PDU {
-// bind PDU
-class Bind {
-public:
+struct Bind {
     /* common fields */
     u_int8 rpc_vers = 5; /* 00:01 RPC version */
     u_int8 rpc_vers_minor = 0; /* 01:01 minor version */
@@ -32,6 +31,13 @@ public:
     /* presentation context list */
     p_cont_list_t p_context_elem; /* variable size */
 
-    // TODO: Add optional auth verifier here
+    inline Bind() { }
+
+    inline Bind(const std::vector<char>& rawPDU) {
+        // Copy flat data
+        memcpy(&pfc_flags, rawPDU.data() + offsetof(Bind, pfc_flags), offsetof(Bind, p_context_elem) - offsetof(Bind, pfc_flags));
+
+        // TODO: Copy complex data types to heap and save pointer, account for it in the destructor
+    }
 };
 } // namespace RPC::PDU
