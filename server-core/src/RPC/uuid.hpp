@@ -16,4 +16,4 @@ typedef struct {
     UNSIGNED_SMALL clock_seq_hi_and_reserved;
     UNSIGNED_SMALL clock_seq_low;
     char node[6];
-} uuid_t;
+} dce_uuid_t;
