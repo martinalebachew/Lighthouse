@@ -11,7 +11,7 @@ underlaying data types that are directly relevant.
 #include "presentation.hpp"
 
 // PDU Types
-enum PDU : ENUM {
+enum struct PDU_Types : ENUM {
     request,
     ping,
     response,
@@ -41,7 +41,7 @@ typedef struct {
     /* common fields */
     u_int8 rpc_vers = 5; /* 00:01 RPC version */
     u_int8 rpc_vers_minor = 0; /* 01:01 minor version */
-    u_int8 PTYPE = bind; /* 02:01 bind PDU */
+    u_int8 PTYPE = (u_int8)PDU_Types::bind; /* 02:01 bind PDU */
     u_int8 pfc_flags; /* 03:01 flags */
     byte packed_drep[4]; /* 04:04 NDR data rep format label*/
     u_int16 frag_length; /* 08:02 total length of fragment */
@@ -55,4 +55,6 @@ typedef struct {
 
     /* presentation context list */
     p_cont_list_t p_context_elem; /* variable size */
+
+    // TODO: Add optional auth verifier here
 } bind_pdu_t;
