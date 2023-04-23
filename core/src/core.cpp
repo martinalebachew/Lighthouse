@@ -19,12 +19,12 @@ int main(int argc, const char* argv[]) {
 
   while (true) { // TODO: Replace iterative server with asynchronous server
     // Establish TCP connection with client
-    tcp::socket socket(ioContext);
+    auto socketPtr = std::make_shared<boost::asio::ip::tcp::socket>(ioContext);
     tcp::endpoint peerEndpoint;
-    acceptor.accept(socket, peerEndpoint);
+    acceptor.accept(*socketPtr, peerEndpoint);
     std::cout << "[TCP] Accepted connection from " << peerEndpoint << std::endl;
 
-    socket.close();
+    socketPtr->close();
     std::cout << "[TCP] Closed connection from " << peerEndpoint << std::endl;
   }
 
