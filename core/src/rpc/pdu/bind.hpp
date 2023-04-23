@@ -9,6 +9,8 @@ This file defines the RPC Bind PDU struct.
 #include "../presentation.hpp"
 #include "../primitives.hpp"
 #include "types.hpp"
+#include <cstring>
+#include <vector>
 
 namespace RPC::PDU {
 struct Bind {
@@ -27,5 +29,15 @@ struct Bind {
 
   // Presentation context list, variable size
   p_cont_list_t p_context_elem;
+
+  Bind(const std::vector<byte> &rawPDU) {
+    // Copy flat data
+    memcpy(
+      &pfc_flags, rawPDU.data() + offsetof(Bind, pfc_flags),
+      offsetof(Bind, p_context_elem) - offsetof(Bind, pfc_flags)
+    );
+
+    // TODO: Copy complex data types to heap and save pointer, account for it in the destructor
+  }
 };
 } // namespace RPC::PDU
