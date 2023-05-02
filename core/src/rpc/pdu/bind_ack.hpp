@@ -52,6 +52,12 @@ struct p_result_list_t {
   p_result_t* p_results;   // Heap-allocated array
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 
+// TODO: Account for different representations in format label
+const std::vector<byte> NDR_32_V2_TRANSFER_SYNTAX = {
+  0x04, 0x5d, 0x88, 0x8a, 0xeb, 0x1c, 0xc9, 0x11, 0x9f, 0xe8,
+  0x08, 0x00, 0x2b, 0x10, 0x48, 0x60, 0x02, 0x00, 0x00, 0x00
+};
+
 namespace RPC::PDU {
 struct BindAck {
   /* NOTE
@@ -135,6 +141,48 @@ struct BindAck {
 
   ~BindAck() {
     free(p_result_list.p_results);
+  }
+
+  std::vector<byte> toBuffer() {
+    // Allocate buffer with size of the fixed-size properties
+    std::vector<byte> buffer =
+      std::vector<byte>(offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec));
+
+    // Copy PDU fixed-size properties into the buffer
+    memcpy(buffer.data(), this, offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec));
+
+    // Buffer offset of the next property to copy
+    unsigned int offset = offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec);
+
+    // Resize the buffer to fit the port_spec
+    buffer.resize(buffer.size() + sec_addr.length);
+    memcpy(buffer.data() + offset, sec_addr.port_spec, sec_addr.length);
+    offset += sec_addr.length;
+
+    // Port length and value 4-octet alignment
+    unsigned int containerLength = sec_addr.length + sizeof(sec_addr.length);
+    unsigned int alignmentSize = 4 - (containerLength % 4);
+
+    // Resize the buffer to fit the alignment
+    buffer.resize(buffer.size() + alignmentSize);
+    offset += alignmentSize;
+
+    // Resize the buffer to fit the fixed-size properties of p_result_list_t
+    buffer.resize(buffer.size() + offsetof(p_result_list_t, p_results));
+    memcpy(buffer.data() + offset, &p_result_list, offsetof(p_result_list_t, p_results));
+    offset += offsetof(p_result_list_t, p_results);
+
+    // Resize the buffer to fit the results list
+    buffer.resize(buffer.size() + p_result_list.n_results * sizeof(p_result_t));
+    memcpy(
+      buffer.data() + offset, p_result_list.p_results,
+      p_result_list.n_results * sizeof(p_result_t)
+    );
+
+    // Adjust the frag_length field in the buffer
+    *(u_int16*)(buffer.data() + offsetof(BindAck, frag_length)) = buffer.size();
+
+    return buffer;
   }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace RPC::PDU
