@@ -53,4 +53,4 @@ typedef UNSIGNED_SHORT u_int16;
 typedef UNSIGNED_LONG u_int32;
 typedef UNSIGNED_HYPER u_int64;
 
-typedef char byte;
+typedef unsigned char byte;

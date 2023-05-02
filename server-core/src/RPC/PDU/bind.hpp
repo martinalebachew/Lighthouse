@@ -9,7 +9,7 @@ This files defines the RPC bind PDU wrapper struct.
 #include <cstring>
 #include <cstdlib>
 #include "../primitives.hpp"
-#include "type.hpp"
+#include "shared.hpp"
 #include "../uuid.hpp"
 
 typedef u_int16 p_context_id_t;
@@ -37,15 +37,15 @@ struct p_cont_list_t {
 namespace RPC::PDU {
 struct Bind {
     /* NOTE
-     Modifying the properties below may break the casting algorithm
-     used in the constructor. Adjust it accordingly.
+       Modifying the properties below may break the casting algorithm.
+       Adjust it accordingly.
     */
 
     /* common fields */
     u_int8 rpc_vers = 5; /* RPC version */
     u_int8 rpc_vers_minor = 0; /* minor version */
     Type PTYPE = Type::bind; /* bind PDU */
-    u_int8 pfc_flags; /* flags */
+    u_int8 pfc_flags = PFC_FIRST_FRAG | PFC_LAST_FRAG; /* flags */
     byte packed_drep[4]; /* NDR data rep format label*/
     u_int16 frag_length; /* total length of fragment */
     u_int16 auth_length = 0; /* length of auth_value */
@@ -59,7 +59,7 @@ struct Bind {
     /* presentation context list */
     p_cont_list_t p_context_elem; /* variable size */
 
-    inline Bind(const std::vector<char>& rawPDU) {
+    inline Bind(const std::vector<byte>& rawPDU) {
         // Copy PDU fixed-size properties, including those nested in p_cont_list_t type.
         memcpy(this, // Copy into the beginning of this structure
                rawPDU.data(), // Copy from the beginning of the raw PDU
