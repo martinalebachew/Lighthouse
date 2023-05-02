@@ -27,7 +27,7 @@ namespace RPC::Control {
 
         std::vector<byte> inline ReceivePDU(boost::asio::ip::tcp::socket &socket) {
             // No support for fragmented PDUs
-            return ReceiveFragment(socket); // TODO: Throw error if PDU is fragmented
+            return ReceiveFragment(socket); // TODO: Throw error if PDU is fragmented (check flags)
         }
     };
 }
