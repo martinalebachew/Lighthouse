@@ -20,5 +20,7 @@ namespace RPC::Control {
 struct Conversation {
   std::vector<byte> ReceiveFragment(socket_t &socket);
   std::vector<byte> ReceivePDU(socket_t &socket);
+  void SendFragment(socket_t &socket, std::vector<byte> fragment);
+  void SendPDU(socket_t &socket, std::vector<byte> pdu);
 };
 } // namespace RPC::Control
