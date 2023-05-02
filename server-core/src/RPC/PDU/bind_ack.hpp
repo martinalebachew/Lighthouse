@@ -86,6 +86,9 @@ struct BindAck {
 
     BindAck(Bind& bind, u_int16 port) :
         sec_addr(port) {
+        // Adjust the multiplex flag according to the bind pdu
+        if (bind.pfc_flags & PFC_CONC_MPX) pfc_flags |= PFC_CONC_MPX;   
+
         // TODO: implement custom data representation that allows us to discard endianess conversion when casting to a buffer
         // For now, we'll copy the data representation of the client, as specified in the bind PDU
         memcpy(packed_drep, bind.packed_drep, 4);
