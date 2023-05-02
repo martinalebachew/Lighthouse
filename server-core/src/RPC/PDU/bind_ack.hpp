@@ -27,14 +27,14 @@ struct port_any_t {
     }
 } __attribute__ ((packed)); // Disabling compiler alignment in favor of RPC alignment.;
 
-enum struct p_provider_reason_t : u_int8 {
+enum struct p_provider_reason_t : u_int16 {
     reason_not_specified,
     abstract_syntax_not_supported,
     proposed_transfer_syntaxes_not_supported,
     local_limit_exceeded
 };
 
-enum struct p_cont_def_result_t : u_int8 {
+enum struct p_cont_def_result_t : u_int16 {
     acceptance, user_rejection, provider_rejection
 };
 
