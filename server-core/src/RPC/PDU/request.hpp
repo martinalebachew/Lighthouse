@@ -44,7 +44,7 @@ struct Request {
 
     /* 8-octet alignment might be present here */
     
-    byte* stub_data;
+    std::vector<byte> stub;
 
     inline Request(const std::vector<byte>& rawPDU) {
         memcpy(this, // Copy into the beginning of this structure
@@ -52,8 +52,8 @@ struct Request {
                offsetof(Request, object_uuid) // Copy all fixed-size properties,
                );
 
-        // Calculate stub_data length
-        unsigned int stub_data_length = rawPDU.size() - offsetof(Request, object_uuid);
+        // Calculate stub length
+        unsigned int stubLength = rawPDU.size() - offsetof(Request, object_uuid);
 
         // Set object_uuid property
         if (pfc_flags & PFC_OBJECT_UUID) {
@@ -64,19 +64,15 @@ struct Request {
                    );
 
             // Subtract object_uuid length, as it is present in the raw PDU
-            stub_data_length -= sizeof(object_uuid);
+            stubLength -= sizeof(object_uuid);
         }
 
-        // Allocate and copy stub_data from the raw PDU
-        stub_data = (byte*)malloc(stub_data_length);
-        memcpy(stub_data,
-               rawPDU.data() + rawPDU.size() - stub_data_length,
-               stub_data_length
+        // Copy stub from the raw PDU
+        stub.resize(stubLength);
+        memcpy(stub.data(),
+               rawPDU.data() + rawPDU.size() - stubLength,
+               stubLength
                );
-    }
-
-    ~Request() {
-        free(stub_data);
     }
 } __attribute__ ((packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace RPC::PDU
