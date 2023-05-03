@@ -11,6 +11,7 @@ This file defines the RPC Request PDU struct.
 #include "shared.hpp"
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 
 typedef u_int16 p_context_id_t;
 
@@ -37,14 +38,14 @@ struct Request {
   // Optional, unsupported value. Requires matching flag turned on
   dce_uuid_t object_uuid;
 
-  byte* stub_data;
+  std::vector<byte> stub;
 
   Request(const std::vector<byte> &rawPDU) {
     // Copy PDU fixed-size properties
     memcpy(this, rawPDU.data(), offsetof(Request, object_uuid));
 
-    // Calculate stub_data length
-    unsigned int stub_data_length = rawPDU.size() - offsetof(Request, object_uuid);
+    // Calculate stub length
+    unsigned int stubLength = rawPDU.size() - offsetof(Request, object_uuid);
 
     // Set object_uuid property
     if (pfc_flags & PFC_OBJECT_UUID) {
@@ -54,16 +55,12 @@ struct Request {
       );
 
       // Subtract object_uuid length, as it is present in the raw PDU
-      stub_data_length -= sizeof(object_uuid);
+      stubLength -= sizeof(object_uuid);
     }
 
-    // Allocate and copy stub_data from the raw PDU
-    stub_data = (byte*)malloc(stub_data_length);
-    memcpy(stub_data, rawPDU.data() + rawPDU.size() - stub_data_length, stub_data_length);
-  }
-
-  ~Request() {
-    free(stub_data);
+    // Copy stub from the raw PDU
+    stub.resize(stubLength);
+    memcpy(stub.data(), rawPDU.data() + rawPDU.size() - stubLength, stubLength);
   }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace RPC::PDU
