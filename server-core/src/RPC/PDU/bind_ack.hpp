@@ -162,8 +162,8 @@ struct BindAck {
                p_result_list.p_results, // Copy from the results list
                p_result_list.n_results * sizeof(p_result_t) // Copy the whole results list
                );
- 
-        frag_length = buffer.size(); // Adjust the frag_length field
+
+        *(buffer.data() + offsetof(BindAck, frag_length)) = buffer.size(); // Adjust the frag_length field in the buffer
 
         return buffer;
     }
