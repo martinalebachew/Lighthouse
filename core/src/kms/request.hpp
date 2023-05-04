@@ -23,6 +23,13 @@ struct Request {
   */
 
   // UNENCRYPTED
+  /* Body length padding
+  Contains the length of the properties after the padding, fixed value
+  of 260 bytes == sizeof(Request) - offsetof(Request, RawVersion)
+  */
+  uint32_t bodyLength1 = 260;
+  uint32_t bodyLength2 = 260;
+
   VERSION RawVersion; // Minor and major version, unencrypted
   BYTE IV[16];        // Initialization vector
 
