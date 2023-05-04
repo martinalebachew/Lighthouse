@@ -22,7 +22,7 @@ struct port_any_t {
         // TODO: account for non-ascii representation in format label
         length = (int)log10(port) + 2; // account for null terminator
         port_spec = (char*)malloc(length);
-        snprintf(port_spec, length, "%d", port);   
+        snprintf(port_spec, length, "%d", port);
     }
 } __attribute__ ((packed)); // Disabling compiler alignment in favor of RPC alignment.;
 
@@ -86,14 +86,14 @@ struct BindAck {
     BindAck(Bind& bind, u_int16 port) :
         sec_addr(port) {
         // Adjust the multiplex flag according to the bind pdu
-        if (bind.pfc_flags & PFC_CONC_MPX) pfc_flags |= PFC_CONC_MPX;   
+        if (bind.pfc_flags & PFC_CONC_MPX) pfc_flags |= PFC_CONC_MPX;
 
         // TODO: implement custom data representation that allows us to discard endianess conversion when casting to a buffer
         // For now, we'll copy the data representation of the client, as specified in the bind PDU
         memcpy(packed_drep, bind.packed_drep, 4);
 
         call_id = bind.call_id; // This value is set by the client
-        
+
         // Doesn't matter beacuse the server doesn't support fragmentation and reassembly, yet this is the correct implementation of those fields:
         max_xmit_frag = bind.max_recv_frag; // Set the max transmit frag to the max receive frag of the client
         max_recv_frag = bind.max_xmit_frag; // Set the max receive frag to the max transmit frag of the client
@@ -105,7 +105,7 @@ struct BindAck {
             srand((unsigned) time(NULL));
             assoc_group_id = (u_int32)rand();
         }
-        
+
         // Allocate memory for the results list
         p_result_list.n_results = bind.p_context_elem.n_context_elem;
         p_result_list.p_results = (p_result_t*)malloc(p_result_list.n_results * sizeof(p_result_t));
@@ -134,14 +134,14 @@ struct BindAck {
         memcpy(buffer.data() + offset, // Copy into the buffer
                this, // Copy from the beginning of this structure
                offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec) // Copy all fixed-size properties
-               );
+              );
         offset += offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec);
 
         buffer.resize(buffer.size() + sec_addr.length); // Resize the buffer to fit the port_spec
         memcpy(buffer.data() + offset, // Copy into the buffer
                sec_addr.port_spec, // Copy from the port array
                sec_addr.length // Copy the whole port array
-               );
+              );
         offset += sec_addr.length;
 
         // Port length and value 4-octet alignment
@@ -154,14 +154,14 @@ struct BindAck {
         memcpy(buffer.data() + offset, // Copy into the buffer
                &p_result_list, // Copy from p_result_list structure
                offsetof(p_result_list_t, p_results) // Copy p_result_list_t fixed-size properties
-               );
+              );
         offset += offsetof(p_result_list_t, p_results);
 
         buffer.resize(buffer.size() + p_result_list.n_results * sizeof(p_result_t)); // Resize the buffer to fit the results list
         memcpy(buffer.data() + offset, // Copy into the buffer
                p_result_list.p_results, // Copy from the results list
                p_result_list.n_results * sizeof(p_result_t) // Copy the whole results list
-               );
+              );
 
         *(u_int16*)(buffer.data() + offsetof(BindAck, frag_length)) = buffer.size(); // Adjust the frag_length field in the buffer
 

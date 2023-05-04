@@ -65,7 +65,7 @@ struct Bind {
                rawPDU.data(), // Copy from the beginning of the raw PDU
                offsetof(Bind, p_context_elem) + offsetof(p_cont_list_t, p_cont_elem)
                // Copy all fixed-size properties, including those nested in p_cont_list_t type.
-               );
+              );
 
         // Allocate array of p_cont_list_t->p_cont_elem_t on the heap
         p_context_elem.p_cont_elem = (p_cont_elem_t*)malloc(p_context_elem.n_context_elem * sizeof(p_cont_elem_t));
@@ -76,7 +76,7 @@ struct Bind {
             memcpy((void*)(&p_context_elem.p_cont_elem[i]), // Copy into the heap-allocated array
                    CurrContElemPtr, // Copy from the calculated offset in the raw PDU
                    offsetof(p_cont_elem_t, transfer_syntaxes) // Copy all fixed-size properties
-                   );
+                  );
 
             // Allocate array of p_cont_list_t->p_cont_elem_t->p_syntax_id_t on the heap
             p_context_elem.p_cont_elem[i].transfer_syntaxes = (p_syntax_id_t*)malloc(p_context_elem.p_cont_elem[i].n_transfer_syn * sizeof(p_syntax_id_t));
@@ -87,7 +87,7 @@ struct Bind {
                 memcpy((void*)(&p_context_elem.p_cont_elem[i].transfer_syntaxes[j]), // Copy into the heap-allocated array
                        CurrSyntaxIdPtr, // Copy from the calculated offset in the raw PDU
                        sizeof(p_syntax_id_t) // Copy all properties
-                       );
+                      );
 
                 CurrSyntaxIdPtr += 1; // Advance the pointer to the next p_syntax_id_t
             }

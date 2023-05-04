@@ -1,7 +1,7 @@
 // primitives.hpp
 // (C) Martin Alebachew, 2023
 
-/* 
+/*
 This file contains definitions for primitive types used by
 the RPC protocol. This includes both types defined under
     C706 §14.2 NDR Primitive Types,

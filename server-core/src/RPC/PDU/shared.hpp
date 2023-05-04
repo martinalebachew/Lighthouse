@@ -19,26 +19,26 @@ This file defines RPC PDU shared types.
 #define PFC_OBJECT_UUID 0x80 /* if true, a non-nil object UUID was specified in the handle, and is present in the optional object field. If false, the object field is omitted. */
 
 namespace RPC::PDU {
-    // PDU Types
-    enum struct Type : u_int8 {
-        request,
-        ping,
-        response,
-        fault,
-        working,
-        nocall,
-        reject,
-        ack,
-        cl_cancel,
-        fack,
-        cancel_ack,
-        bind,
-        bind_ack,
-        bind_nak,
-        alter_context,
-        alter_context_resp,
-        shutdown = 17, // Skipping 16 as defined in C706
-        co_cancel,
-        orphaned
-    };
+// PDU Types
+enum struct Type : u_int8 {
+    request,
+    ping,
+    response,
+    fault,
+    working,
+    nocall,
+    reject,
+    ack,
+    cl_cancel,
+    fack,
+    cancel_ack,
+    bind,
+    bind_ack,
+    bind_nak,
+    alter_context,
+    alter_context_resp,
+    shutdown = 17, // Skipping 16 as defined in C706
+    co_cancel,
+    orphaned
+};
 };
