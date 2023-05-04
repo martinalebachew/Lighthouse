@@ -2,7 +2,7 @@
 // (C) Martin Alebachew, 2023
 
 /*
-This files defines the RPC bind PDU wrapper struct.
+This file defines the RPC bind PDU wrapper struct.
 */
 
 #pragma once
