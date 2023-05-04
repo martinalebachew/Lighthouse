@@ -23,11 +23,16 @@ struct Request {
      Adjust it accordingly.
   */
 
+  /* Body length padding
+     Contains the length of the properties after the padding, fixed value */
+  u_int32_t bodyLength1 = 260;
+  u_int32_t bodyLength2 = 260;
+
   /* UNENCRYPTED */
   VERSION RawVersion; // Minor and major version, unencrypted
 	BYTE IV[16];        // IV	
 
-  /* ENCRYPTED */
+  /* ENCRYPTED AES CBC 128-bits key, PKCS7 */
   VERSION Version;           // Minor and major version
   DWORD VMInfo;              // 0 = client is bare metal, 1 = client is VM
   DWORD LicenseStatus;       // 0 = Unlicensed, 1 = Licensed (Activated), 2 = OOB grace, 3 = OOT grace, 4 = NonGenuineGrace, 5 = Notification, 6 = extended grace
@@ -41,6 +46,7 @@ struct Request {
   GUID CMID_prev;            // Previous client machine Id. All zeros, if it never changed
   WCHAR WorkstationName[64]; // Workstation name. FQDN if available, NetBIOS otherwise
 
-  BYTE Pad[4]; // Fixed padding (request size is fixed, required for AES, PKCS)
-};
-}
+  BYTE Pad[4]; // Fixed padding (request size is fixed, required for AES, PKCS7)
+
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
+} // namespace KMS
