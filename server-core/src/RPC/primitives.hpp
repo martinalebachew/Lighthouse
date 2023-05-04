@@ -1,7 +1,7 @@
 // primitives.hpp
 // (C) Martin Alebachew, 2023
 
-/* 
+/*
 This file contains definitions for primitive types used by
 the RPC protocol. This includes both types defined under
     C706 §14.2 NDR Primitive Types,
@@ -40,7 +40,6 @@ typedef int64_t CRAY_DOUBLE;
 
 typedef int32_t IBM_SHORT;
 typedef int64_t IBM_LONG;
-
 
 // C706 §12.6.3.1 Declarations
 typedef SMALL int8;
