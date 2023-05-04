@@ -13,7 +13,7 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 struct VERSION {
   WORD Minor;
   WORD Major;
-};
+} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 
 namespace KMS {
 struct Request {
@@ -40,6 +40,6 @@ struct Request {
   GUID CMID_prev;            // Previous client machine Id. All zeros, if it never changed
   WCHAR WorkstationName[64]; // Workstation name. FQDN if available, NetBIOS otherwise
 
-  BYTE Pad[4]; // Fixed padding (request size is fixed, required for encryption)
-};
+  BYTE Pad[4];             // Fixed padding (request size is fixed, required for encryption)
+} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace KMS
