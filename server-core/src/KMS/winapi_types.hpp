@@ -10,18 +10,17 @@ This file defines the WinAPI types required for KMS.
 
 typedef u_int16_t WORD;
 typedef u_int32_t DWORD;
-
-struct GUID {
-  unsigned long  Data1;
-  unsigned short Data2;
-  unsigned short Data3;
-  unsigned char  Data4[8];
-} __attribute__((
-    packed)); // Disabling compiler alignment in favor of RPC alignment.
-
 typedef char16_t WCHAR;
 typedef unsigned char byte;
 typedef byte BYTE;
+
+struct GUID {
+  u_int32_t Data1;
+  u_int16_t Data2;
+  u_int16_t Data3;
+  byte      Data4[8];
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
 
 struct FILETIME {
   DWORD dwLowDateTime;
