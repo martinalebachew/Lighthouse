@@ -18,3 +18,10 @@ typedef struct _GUID {
 } GUID;
 
 typedef wchar_t WCHAR;
+typedef unsigned char byte;
+typedef byte BYTE;
+
+typedef struct _FILETIME {
+  DWORD dwLowDateTime;
+  DWORD dwHighDateTime;
+} FILETIME;
