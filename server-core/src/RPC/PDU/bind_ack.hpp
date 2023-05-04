@@ -89,7 +89,7 @@ struct BindAck {
   /* 4-octet alignment pad might be present here */
 
   /* presentation context result list, including hints */
-  p_result_list_t p_result_list = 0; /* variable size */
+  p_result_list_t p_result_list; /* variable size */
 
   BindAck(Bind &bind, u_int16 port) : sec_addr(port) {
     // Adjust the multiplex flag according to the bind pdu
