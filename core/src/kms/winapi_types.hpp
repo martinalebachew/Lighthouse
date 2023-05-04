@@ -17,10 +17,10 @@ typedef byte BYTE;
 typedef char16_t WCHAR;
 
 struct GUID {
-  unsigned long Data1;
-  unsigned short Data2;
-  unsigned short Data3;
-  unsigned char Data4[8];
+  uint32_t Data1;
+  uint16_t Data2;
+  uint16_t Data3;
+  byte Data4[8];
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 
 struct FILETIME {
