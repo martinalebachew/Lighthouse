@@ -41,7 +41,6 @@ typedef int64_t CRAY_DOUBLE;
 typedef int32_t IBM_SHORT;
 typedef int64_t IBM_LONG;
 
-
 // C706 §12.6.3.1 Declarations
 typedef SMALL int8;
 typedef SHORT int16;
