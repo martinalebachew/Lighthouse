@@ -2,7 +2,7 @@
 // (C) Martin Alebachew, 2023
 
 /*
-This file defines the RPC bindack PDU wrapper struct.
+This files defines the RPC bindack PDU wrapper struct.
 */
 
 #pragma once
@@ -92,6 +92,8 @@ struct BindAck {
   p_result_list_t p_result_list; /* variable size */
 
   BindAck(Bind &bind, u_int16 port) : sec_addr(port) {
+    memset(this, 0, sizeof(BindAck)); // Zero the structure to comply with all KMS clients
+
     // Adjust the multiplex flag according to the bind pdu
     if (bind.pfc_flags & PFC_CONC_MPX)
       pfc_flags |= PFC_CONC_MPX;
@@ -150,6 +152,7 @@ struct BindAck {
         offsetof(BindAck, sec_addr) +
         offsetof(port_any_t, port_spec)); // Allocate buffer with size of the
                                           // fixed-size properties
+
     unsigned int offset = 0; // Buffer offset of the next property to copy
 
     // Copy PDU fixed-size properties into the buffer
