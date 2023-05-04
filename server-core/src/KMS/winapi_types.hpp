@@ -17,7 +17,7 @@ typedef struct _GUID {
   unsigned char  Data4[8];
 } GUID;
 
-typedef wchar_t WCHAR;
+typedef char16_t WCHAR;
 typedef unsigned char byte;
 typedef byte BYTE;
 
