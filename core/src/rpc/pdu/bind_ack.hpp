@@ -47,8 +47,8 @@ struct p_result_t {
 
 struct p_result_list_t {
   u_int8 n_results; // Number of items
-  u_int8 reserved;
-  u_int16 reserved2;
+  u_int8 reserved = 0;
+  u_int16 reserved2 = 0;
   p_result_t* p_results;   // Heap-allocated array
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 
