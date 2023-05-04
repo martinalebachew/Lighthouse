@@ -24,7 +24,8 @@ struct Request {
   */
 
   /* Body length padding
-     Contains the length of the properties after the padding, fixed value */
+     Contains the length of the properties after the padding, fixed value
+     of 260 bytes == sizeof(Request) - offsetof(Request, RawVersion) */
   u_int32_t bodyLength1 = 260;
   u_int32_t bodyLength2 = 260;
 
@@ -48,5 +49,6 @@ struct Request {
 
   BYTE Pad[4]; // Fixed padding (request size is fixed, required for AES, PKCS7)
 
+} __attribute__((
     packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace KMS
