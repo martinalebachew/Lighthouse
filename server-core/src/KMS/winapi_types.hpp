@@ -6,7 +6,6 @@ This file defines the WinAPI types required for KMS.
 */
 
 #pragma once
-#include "../primitives.hpp"
 
 typedef unsigned short WORD;
 typedef unsigned long  DWORD;
