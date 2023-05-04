@@ -10,10 +10,11 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 #include "winapi_types.hpp"
 #include <vector>
 
-typedef struct _VERSION {
+struct VERSION {
   WORD Minor;
   WORD Major;
-} VERSION;
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
 
 namespace KMS {
 struct Request {
@@ -23,8 +24,8 @@ struct Request {
   */
 
   /* UNENCRYPTED */
-  VERSION RawVersion;     // Minor and major version, unencrypted
-	BYTE IV[16];         // IV	
+  VERSION RawVersion; // Minor and major version, unencrypted
+	BYTE IV[16];        // IV	
 
   /* ENCRYPTED */
   VERSION Version;           // Minor and major version
