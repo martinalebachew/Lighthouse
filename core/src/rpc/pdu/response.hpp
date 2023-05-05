@@ -30,11 +30,21 @@ struct Response {
   u_int16 auth_length = 0;
   u_int32 call_id;
 
-  u_int32 alloc_hint;
-  p_context_id_t p_cont_id;
-  u_int8 cancel_count;
+  u_int32 alloc_hint = 0;
+  p_context_id_t p_cont_id = 0;
+  u_int8 cancel_count = 0;
   u_int8 reserved;
 
   std::vector<byte> stub;
+
+  Response(Request &request, std::vector<byte> responseStub) {
+    // TODO: Implement custom data representation that allows us to discard
+    // endianess conversion when casting to a buffer. For now, we'll copy the
+    // data representation of the client, as specified in the Bind PDU.
+    memcpy(packed_drep, request.packed_drep, 4);
+
+    call_id = request.call_id; // This value is set by the client
+    stub = responseStub;
+  }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace RPC::PDU
