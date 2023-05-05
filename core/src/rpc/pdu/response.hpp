@@ -46,5 +46,15 @@ struct Response {
     call_id = request.call_id; // This value is set by the client
     stub = responseStub;
   }
+
+  std::vector<byte> toBuffer() {
+    frag_length = offsetof(Response, stub) + stub.size();
+    alloc_hint = frag_length;
+
+    std::vector<byte> buffer = std::vector<byte>(frag_length);
+    memcpy(buffer.data(), this, offsetof(Response, stub));
+    memcpy(buffer.data() + offsetof(Response, stub), stub.data(), stub.size());
+    return buffer;
+  }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace RPC::PDU
