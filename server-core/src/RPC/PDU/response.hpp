@@ -32,12 +32,22 @@ struct Response {
   u_int32 call_id;         /* call identifier */
   /* end common fields */
 
-  u_int32 alloc_hint; /* allocation hint */
-  p_context_id_t p_cont_id; /* pres context, i.e. data rep */
-  u_int8 cancel_count; /* cancel count */
+  u_int32 alloc_hint = 0; /* allocation hint */
+  p_context_id_t p_cont_id = 0; /* pres context, i.e. data rep */
+  u_int8 cancel_count = 0; /* cancel count */
   u_int8 reserved; /* reserved, m.b.z. */
 
   std::vector<byte> stub;
+
+  Response(Request &request, std::vector<byte> responseStub) {
+    // TODO: implement custom data representation that allows us to discard
+    // endianess conversion when casting to a buffer For now, we'll copy the
+    // data representation of the client, as specified in the bind PDU
+    memcpy(packed_drep, request.packed_drep, 4);
+
+    call_id = request.call_id; // This value is set by the client  
+    stub = responseStub;
+  }
 } __attribute__((
     packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace RPC::PDU
