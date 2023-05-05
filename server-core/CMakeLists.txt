@@ -3,7 +3,7 @@
 
 cmake_minimum_required(VERSION 3.8)
 project(server-core C CXX)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 
 include_directories(${Boost_INCLUDE_DIRS})
 find_package(Boost REQUIRED COMPONENTS system)  # thread regex
