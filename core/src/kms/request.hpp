@@ -7,7 +7,9 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 */
 
 #pragma once
+#include "crypto.hpp"
 #include "winapi_types.hpp"
+#include <string>
 #include <vector>
 
 struct VERSION {
@@ -47,6 +49,30 @@ struct Request {
   GUID CMID_prev;            // Previous client machine Id. All zeros, if it never changed
   WCHAR WorkstationName[64]; // Workstation name. FQDN if available, NetBIOS otherwise
 
-  BYTE Pad[4];             // Fixed padding (request size is fixed, required for encryption)
+  BYTE Pad[4]; // Fixed padding (request size is fixed, required for encryption)
+
+  Request(std::vector<byte> stub) {
+    // Validate stub size
+    if (stub.size() != sizeof(Request)) {
+      throw std::runtime_error(
+        "Invalid stub size. Expected " + std::to_string(sizeof(Request)) + " bytes, got " +
+        std::to_string(stub.size()) + " bytes."
+      );
+    }
+
+    // Copy all properties
+    memcpy(this, stub.data(), sizeof(Request));
+
+    // Decrypt stub encrypted properties
+    AesCtx ctx;
+    AesInitKey(&ctx, AesKeyV6, 16);
+    AesDecryptCbc(&ctx, NULL, IV, 256);
+
+    // Validate decryption
+    if (memcmp(&RawVersion, &Version, sizeof(VERSION)))
+      throw std::runtime_error("Stub decryption failed.");
+
+    // TODO: Validate KMS version 6.0
+  }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace KMS
