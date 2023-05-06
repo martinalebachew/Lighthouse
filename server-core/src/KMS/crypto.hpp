@@ -5,6 +5,7 @@
 This file contains modified Wind4/vlmcsd implementations of AES.
 */
 
+#pragma once
 #include "winapi_types.hpp"
 #include <cstdint>
 #include <cstring>
