@@ -51,7 +51,7 @@ struct Response {
 
   std::vector<byte> toBuffer() {
     frag_length = offsetof(Response, stub) + stub.size();
-    alloc_hint = frag_length; // Irrelevant since fragmented requests are not implemented
+    alloc_hint = stub.size(); // Irrelevant since fragmented requests are not implemented
 
     std::vector<byte> buffer = std::vector<byte>(frag_length);
     memcpy(buffer.data(), this, offsetof(Response, stub));
