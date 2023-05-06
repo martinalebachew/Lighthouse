@@ -49,7 +49,7 @@ struct Response {
 
   std::vector<byte> toBuffer() {
     frag_length = offsetof(Response, stub) + stub.size();
-    alloc_hint = frag_length;
+    alloc_hint = stub.size();
 
     std::vector<byte> buffer = std::vector<byte>(frag_length);
     memcpy(buffer.data(), this, offsetof(Response, stub));
