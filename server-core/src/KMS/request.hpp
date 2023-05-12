@@ -15,8 +15,7 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 struct VERSION {
   WORD Minor;
   WORD Major;
-} __attribute__((
-    packed)); // Disabling compiler alignment in favor of RPC alignment.
+} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
 
 namespace KMS {
 struct Request {
@@ -50,38 +49,7 @@ struct Request {
   WCHAR WorkstationName[64]; // Workstation name. FQDN if available, NetBIOS otherwise
   BYTE Pad[4];               // Fixed padding (request size is fixed, required for AES, PKCS7)  
 
-  inline Request(std::vector<byte> stub)
-  {
-    // Validate stub size
-    if (stub.size() != sizeof(Request))
-      throw std::runtime_error("Invalid stub size. Expected " +
-                                std::to_string(sizeof(Request)) + " bytes, got " +
-                                std::to_string(stub.size()) + " bytes.");
-
-    // Copy all properties
-    memcpy(this, stub.data(), sizeof(Request));
-
-    // Decrypt stub encrypted properties
-    AesCtx ctx;
-    AesInitKey(&ctx, KeyV6);
-    AesDecryptCbc(&ctx, IV, 256);
-
-    // Validate decryption
-    if (!!memcmp(&RawVersion, &Version, sizeof(VERSION))) 
-      throw std::runtime_error("Stub decryption failed.");
-
-    // TODO: validate KMS version 6.0
-  }
-
-  inline std::string GetWorkstationName() {
-    std::string name = "";
-    for (int i = 0; i < 64; i++) {
-      if (WorkstationName[i] == 0) break;
-      name += WorkstationName[i];
-    }
-
-    return name;
-  }
-} __attribute__((
-    packed)); // Disabling compiler alignment in favor of RPC alignment.
+  Request(std::vector<byte> stub);
+  std::string GetWorkstationName();
+} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace KMS
