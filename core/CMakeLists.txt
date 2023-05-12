@@ -10,6 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 include_directories(${Boost_INCLUDE_DIRS})
 find_package(Boost REQUIRED COMPONENTS system)
 
-add_executable(core src/core.cpp)
-target_sources(core PRIVATE src/rpc/control.cpp)
+file(GLOB SOURCES src/*.cpp src/*/*.cpp src/*/*/*.cpp)
+add_executable(core ${SOURCES})
+
 target_link_libraries(core ${Boost_SYSTEM_LIBRARY})
