@@ -50,8 +50,8 @@ struct p_result_t {
 
 struct p_result_list_t {
   u_int8 n_results;      /* count */
-  u_int8 reserved;       /* alignment pad, m.b.z. */
-  u_int16 reserved2;     /* alignment pad, m.b.z. */
+  u_int8 reserved = 0;   /* alignment pad, m.b.z. */
+  u_int16 reserved2 = 0; /* alignment pad, m.b.z. */
   p_result_t *p_results; // Heap-allocated array
 } __attribute__((
     packed)); // Disabling compiler alignment in favor of RPC alignment.;
@@ -150,15 +150,14 @@ struct BindAck {
         offsetof(BindAck, sec_addr) +
         offsetof(port_any_t, port_spec)); // Allocate buffer with size of the
                                           // fixed-size properties
-    unsigned int offset = 0; // Buffer offset of the next property to copy
 
     // Copy PDU fixed-size properties into the buffer
-    memcpy(buffer.data() + offset, // Copy into the buffer
+    memcpy(buffer.data(), // Copy into the buffer
            this,                   // Copy from the beginning of this structure
            offsetof(BindAck, sec_addr) +
                offsetof(port_any_t, port_spec) // Copy all fixed-size properties
     );
-    offset += offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec);
+    unsigned int offset = offsetof(BindAck, sec_addr) + offsetof(port_any_t, port_spec); // Buffer offset of the next property to copy
 
     buffer.resize(buffer.size() +
                   sec_addr.length); // Resize the buffer to fit the port_spec
