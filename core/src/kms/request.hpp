@@ -65,8 +65,8 @@ struct Request {
 
     // Decrypt stub encrypted properties
     AesCtx ctx;
-    AesInitKey(&ctx, AesKeyV6, 16);
-    AesDecryptCbc(&ctx, NULL, IV, 256);
+    AesInitKey(&ctx, KeyV6);
+    AesDecryptCbc(&ctx, IV, 256);
 
     // Validate decryption
     if (memcmp(&RawVersion, &Version, sizeof(VERSION)))

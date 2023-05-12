@@ -10,11 +10,10 @@ This file contains modified Wind4/vlmcsd implementations of AES.
 #include <bit>
 #include <cstdint>
 #include <cstring>
+#include <vector>
 
-#define AES_KEY_BYTES   (16) // 128 Bits
 #define AES_BLOCK_BYTES (16)
 #define AES_BLOCK_WORDS (AES_BLOCK_BYTES / sizeof(DWORD))
-#define AES_KEY_DWORDS  (AES_KEY_BYTES / sizeof(DWORD))
 
 #define ROR32(v, n) ((v) << (32 - n) | (v) >> n)
 
@@ -23,7 +22,7 @@ typedef struct {
   uint_fast8_t rounds;
 } AesCtx;
 
-const BYTE AesKeyV6[] = {
+const std::vector<byte> KeyV6 = {
   0xA9, 0x4A, 0x41, 0x95, 0xE2, 0x01, 0x43, 0x2D,
   0x9B, 0xCB, 0x46, 0x04, 0x05, 0xD8, 0x4A, 0x21
 };
@@ -58,6 +57,13 @@ void XorBlock(
   for (i = 0; i < AES_BLOCK_WORDS; i++) ((DWORD*)out)[i] ^= ((DWORD*)in)[i];
 }
 
+#define rand32() ((uint32_t)((rand() << 17) | (rand() << 2) | (rand() & 3)))
+
+void get16RandomBytes(void* ptr) {
+  int i;
+  for (i = 0; i < 4; i++) ((DWORD*)ptr)[i] = rand32();
+}
+
 #define AddRoundKey(d, rk) XorBlock((const BYTE*)rk, (const BYTE*)d)
 
 #define Mul2(word) (((word & 0x7f7f7f7f) << 1) ^ (((word & 0x80808080) >> 7) * 0x1b))
@@ -86,8 +92,8 @@ static DWORD SubDword(DWORD v) {
   return v;
 }
 
-void AesInitKey(AesCtx* Ctx, const BYTE* Key, int RijndaelKeyBytes) {
-  int RijndaelKeyDwords = RijndaelKeyBytes / sizeof(DWORD);
+void AesInitKey(AesCtx* Ctx, std::vector<byte> key) {
+  int RijndaelKeyDwords = key.size() / sizeof(DWORD);
   Ctx->rounds = (uint_fast8_t)(RijndaelKeyDwords + 6);
 
   static const DWORD RCon[] = {
@@ -98,7 +104,7 @@ void AesInitKey(AesCtx* Ctx, const BYTE* Key, int RijndaelKeyBytes) {
   uint_fast8_t i;
   DWORD temp;
 
-  memcpy(Ctx->Key, Key, RijndaelKeyBytes);
+  memcpy(Ctx->Key, key.data(), key.size());
 
   for (i = (uint_fast8_t)RijndaelKeyDwords; i < (Ctx->rounds + 1) << 2; i++) {
     temp = Ctx->Key[i - 1];
@@ -195,8 +201,7 @@ static void SubBytesR(BYTE* block) {
 }
 
 void AesEncryptCbc(
-  const AesCtx* const Ctx, BYTE* __restrict__ iv, BYTE* __restrict__ data,
-  size_t* __restrict__ len
+  const AesCtx* const Ctx, BYTE* __restrict__ data, size_t* __restrict__ len
 ) {
   // Pad up to blocksize inclusive
   size_t i;
@@ -205,7 +210,6 @@ void AesEncryptCbc(
   memset(data + *len, pad, pad);
   *len += pad;
 
-  if (iv) XorBlock(iv, data);
   AesEncryptBlock(Ctx, data);
 
   for (i = *len - AES_BLOCK_BYTES; i; i -= AES_BLOCK_BYTES) {
@@ -231,7 +235,7 @@ void AesDecryptBlock(const AesCtx* const Ctx, BYTE* block) {
   }
 }
 
-void AesDecryptCbc(const AesCtx* const Ctx, BYTE* iv, BYTE* data, size_t len) {
+void AesDecryptCbc(const AesCtx* const Ctx, BYTE* data, size_t len) {
   BYTE* cc;
 
   for (cc = data + len - AES_BLOCK_BYTES; cc > data; cc -= AES_BLOCK_BYTES) {
@@ -240,5 +244,4 @@ void AesDecryptCbc(const AesCtx* const Ctx, BYTE* iv, BYTE* data, size_t len) {
   }
 
   AesDecryptBlock(Ctx, cc);
-  if (iv) XorBlock(iv, cc);
 }
