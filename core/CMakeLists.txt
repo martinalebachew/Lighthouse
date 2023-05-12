@@ -14,3 +14,4 @@ file(GLOB SOURCES src/*.cpp src/*/*.cpp src/*/*/*.cpp)
 add_executable(core ${SOURCES})
 
 target_link_libraries(core ${Boost_SYSTEM_LIBRARY})
+target_precompile_headers(core PRIVATE src/core.hpp <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
