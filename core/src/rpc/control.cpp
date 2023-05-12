@@ -17,7 +17,7 @@ std::vector<byte> Conversation::ReceiveFragment(socket_t &socket) {
 
   size_t size = *(u_int16*)(&fragment.at(HEAD_SIZE - 2));
   fragment.resize(size);
-  std::cout << "[RPC] PDU Fragment Size: " << size << " bytes" << std::endl;
+  std::cout << "[RPC] >>> PDU Size: " << size << " bytes" << std::endl;
 
   // Receive rest of the fragment
   boost::asio::read(
@@ -33,6 +33,7 @@ std::vector<byte> Conversation::ReceivePDU(socket_t &socket) {
 }
 
 void Conversation::SendFragment(socket_t &socket, std::vector<byte> fragment) {
+  std::cout << "[RPC] <<< PDU Size: " << fragment.size() << " bytes" << std::endl;
   boost::asio::write(socket, boost::asio::buffer(fragment));
 }
 
