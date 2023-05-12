@@ -11,7 +11,7 @@ find_package(Boost REQUIRED COMPONENTS system)  # thread regex
 
 set(used_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY}
 
-file(GLOB SOURCES src/*.cpp)
+file(GLOB SOURCES src/*.cpp src/*/*.cpp src/*/*/*.cpp)
 add_executable(server-core ${SOURCES})
 
 target_link_libraries(server-core ${used_libs})
