@@ -9,6 +9,7 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 #pragma once
 #include "winapi_types.hpp"
 #include "crypto.hpp"
+#include "sha256.hpp"
 #include <vector>
 
 struct VERSION {
@@ -39,8 +40,8 @@ struct Request {
   DWORD VMInfo;              // 0 = client is bare metal, 1 = client is VM
   DWORD LicenseStatus;       // 0 = Unlicensed, 1 = Licensed (Activated), 2 = OOB grace, 3 = OOT grace, 4 = NonGenuineGrace, 5 = Notification, 6 = extended grace
   DWORD BindingExpiration;   // Expiration of the current status in minutes (e.g. when KMS activation or OOB grace expires)
-  GUID AppID;                // Can currently be Windows, Office2010 or Office2013 (see kms.c, table AppList)
-  GUID ActID;                // Most detailed product list. One product key per ActID. Ignored by KMS server
+  GUID AppID;                // Can currently be Windows, Office2010 or Office2013
+  GUID ActID;                // aka SKUID. Most detailed product list. One product key per ActID. Ignored by KMS server
   GUID KMSID;                // This is what the KMS server uses to grant or refuse activation
   GUID CMID;                 // Client machine Id. Used by the KMS server for counting minimum clients
   DWORD N_Policy;            // Minimum clients required for activation
@@ -62,12 +63,14 @@ struct Request {
 
     // Decrypt stub encrypted properties
     AesCtx ctx;
-    AesInitKey(&ctx, AesKeyV6, 16);
-    AesDecryptCbc(&ctx, NULL, IV, 256);
+    AesInitKey(&ctx, KeyV6);
+    AesDecryptCbc(&ctx, IV, 256);
 
     // Validate decryption
     if (!!memcmp(&RawVersion, &Version, sizeof(VERSION))) 
       throw std::runtime_error("Stub decryption failed.");
+
+    // TODO: validate KMS version 6.0
   }
 
   inline std::string GetWorkstationName() {
