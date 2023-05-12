@@ -12,8 +12,8 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-# Dependencies directory
-dep
+# Output directory
+bin
 
 # MacOS files
 .DS_Store
