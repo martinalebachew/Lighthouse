@@ -6,7 +6,6 @@ This file defines the RPC request PDU wrapper struct.
 */
 
 #pragma once
-#include "../../debug.hpp"
 #include "../primitives.hpp"
 #include "../uuid.hpp"
 #include "shared.hpp"
