@@ -6,24 +6,23 @@ This file contains modified Wind4/vlmcsd implementation of SHA256.
 */
 
 #pragma once
-#include "winapi_types.hpp"
 #include "crypto.hpp"
+#include "winapi_types.hpp"
 #include <bit>
 #include <cstring>
 
+#define F0(x, y, z) (((x) & (y)) | (~(x) & (z)))
+#define F1(x, y, z) (((x) & (y)) | ((x) & (z)) | ((y) & (z)))
 
-#define F0(x, y, z)  ( ((x) & (y)) | (~(x) & (z)) )
-#define F1(x, y, z)  ( ((x) & (y)) | ((x) & (z)) | ((y) & (z)) )
-
-#define SI1(x)  ( ROR32(x, 2 ) ^ ROR32(x, 13) ^ ROR32(x, 22) )
-#define SI2(x)  ( ROR32(x, 6 ) ^ ROR32(x, 11) ^ ROR32(x, 25) )
-#define SI3(x)  ( ROR32(x, 7 ) ^ ROR32(x, 18) ^ ((x) >> 3 ) )
-#define SI4(x)  ( ROR32(x, 17) ^ ROR32(x, 19) ^ ((x) >> 10) )
+#define SI1(x) (ROR32(x, 2) ^ ROR32(x, 13) ^ ROR32(x, 22))
+#define SI2(x) (ROR32(x, 6) ^ ROR32(x, 11) ^ ROR32(x, 25))
+#define SI3(x) (ROR32(x, 7) ^ ROR32(x, 18) ^ ((x) >> 3))
+#define SI4(x) (ROR32(x, 17) ^ ROR32(x, 19) ^ ((x) >> 10))
 
 typedef struct {
-    DWORD  State[8];
-    BYTE   Buffer[64];
-    unsigned int  Len;
+  DWORD State[8];
+  BYTE Buffer[64];
+  unsigned int Len;
 } Sha256Ctx;
 
 static const DWORD k[] = {
@@ -37,127 +36,113 @@ static const DWORD k[] = {
     0xC24B8B70, 0xC76C51A3, 0xD192E819, 0xD6990624, 0xF40E3585, 0x106AA070,
     0x19A4C116, 0x1E376C08, 0x2748774C, 0x34B0BCB5, 0x391C0CB3, 0x4ED8AA4A,
     0x5B9CCA4F, 0x682E6FF3, 0x748F82EE, 0x78A5636F, 0x84C87814, 0x8CC70208,
-    0x90BEFFFA, 0xA4506CEB, 0xBEF9A3F7, 0xC67178F2
-};
+    0x90BEFFFA, 0xA4506CEB, 0xBEF9A3F7, 0xC67178F2};
 
-
-static void Sha256Init(Sha256Ctx *Ctx)
-{
-    memset(Ctx, 0xab, sizeof(Sha256Ctx));
-    Ctx->State[0] = 0x6A09E667;
-    Ctx->State[1] = 0xBB67AE85;
-    Ctx->State[2] = 0x3C6EF372;
-    Ctx->State[3] = 0xA54FF53A;
-    Ctx->State[4] = 0x510E527F;
-    Ctx->State[5] = 0x9B05688C;
-    Ctx->State[6] = 0x1F83D9AB;
-    Ctx->State[7] = 0x5BE0CD19;
-    Ctx->Len = 0;
+static void Sha256Init(Sha256Ctx *Ctx) {
+  memset(Ctx, 0xab, sizeof(Sha256Ctx));
+  Ctx->State[0] = 0x6A09E667;
+  Ctx->State[1] = 0xBB67AE85;
+  Ctx->State[2] = 0x3C6EF372;
+  Ctx->State[3] = 0xA54FF53A;
+  Ctx->State[4] = 0x510E527F;
+  Ctx->State[5] = 0x9B05688C;
+  Ctx->State[6] = 0x1F83D9AB;
+  Ctx->State[7] = 0x5BE0CD19;
+  Ctx->Len = 0;
 }
 
+static void Sha256ProcessBlock(Sha256Ctx *Ctx, BYTE *block) {
+  unsigned int i;
+  DWORD w[64], temp1, temp2;
+  DWORD a = Ctx->State[0];
+  DWORD b = Ctx->State[1];
+  DWORD c = Ctx->State[2];
+  DWORD d = Ctx->State[3];
+  DWORD e = Ctx->State[4];
+  DWORD f = Ctx->State[5];
+  DWORD g = Ctx->State[6];
+  DWORD h = Ctx->State[7];
 
-static void Sha256ProcessBlock(Sha256Ctx *Ctx, BYTE *block)
-{
-    unsigned int  i;
-    DWORD  w[64], temp1, temp2;
-    DWORD  a = Ctx->State[0];
-    DWORD  b = Ctx->State[1];
-    DWORD  c = Ctx->State[2];
-    DWORD  d = Ctx->State[3];
-    DWORD  e = Ctx->State[4];
-    DWORD  f = Ctx->State[5];
-    DWORD  g = Ctx->State[6];
-    DWORD  h = Ctx->State[7];
+  for (i = 0; i < 16; i++)
+    // w[ i ] = GET_UAA32BE(block, i);
+    w[i] = std::byteswap(((DWORD *)block)[i]);
 
-    for (i = 0; i < 16; i++)
-        //w[ i ] = GET_UAA32BE(block, i);
-        w[i] = std::byteswap(((DWORD*)block)[i]);
+  for (i = 16; i < 64; i++)
+    w[i] = SI4(w[i - 2]) + w[i - 7] + SI3(w[i - 15]) + w[i - 16];
 
-    for (i = 16; i < 64; i++)
-        w[ i ] = SI4(w[ i - 2 ]) + w[ i - 7 ] + SI3(w[ i - 15 ]) + w[ i - 16 ];
+  for (i = 0; i < 64; i++) {
+    temp1 = h + SI2(e) + F0(e, f, g) + k[i] + w[i];
+    temp2 = SI1(a) + F1(a, b, c);
 
-    for (i = 0; i < 64; i++)
-    {
-        temp1 = h + SI2(e) + F0(e, f, g) + k[ i ] + w[ i ];
-        temp2 = SI1(a) + F1(a, b, c);
+    h = g;
+    g = f;
+    f = e;
+    e = d + temp1;
+    d = c;
+    c = b;
+    b = a;
+    a = temp1 + temp2;
+  }
 
-        h = g;
-        g = f;
-        f = e;
-        e = d + temp1;
-        d = c;
-        c = b;
-        b = a;
-        a = temp1 + temp2;
-    }
-
-    Ctx->State[0] += a;
-    Ctx->State[1] += b;
-    Ctx->State[2] += c;
-    Ctx->State[3] += d;
-    Ctx->State[4] += e;
-    Ctx->State[5] += f;
-    Ctx->State[6] += g;
-    Ctx->State[7] += h;
+  Ctx->State[0] += a;
+  Ctx->State[1] += b;
+  Ctx->State[2] += c;
+  Ctx->State[3] += d;
+  Ctx->State[4] += e;
+  Ctx->State[5] += f;
+  Ctx->State[6] += g;
+  Ctx->State[7] += h;
 }
 
+static void Sha256Update(Sha256Ctx *Ctx, BYTE *data, size_t len) {
+  unsigned int b_len = Ctx->Len & 63, r_len = (b_len ^ 63) + 1;
 
-static void Sha256Update(Sha256Ctx *Ctx, BYTE *data, size_t len)
-{
-    unsigned int  b_len = Ctx->Len & 63,
-                  r_len = (b_len ^ 63) + 1;
+  Ctx->Len += (unsigned int)len;
 
-    Ctx->Len += (unsigned int)len;
+  if (len < r_len) {
+    memcpy(Ctx->Buffer + b_len, data, len);
+    return;
+  }
 
-    if ( len < r_len )
-    {
-        memcpy(Ctx->Buffer + b_len, data, len);
-        return;
-    }
-
-    if ( r_len < 64 )
-    {
-        memcpy(Ctx->Buffer + b_len, data, r_len);
-        len  -= r_len;
-        data += r_len;
-        Sha256ProcessBlock(Ctx, Ctx->Buffer);
-    }
-
-    for (; len >= 64; len -= 64, data += 64)
-        Sha256ProcessBlock(Ctx, data);
-
-    if ( len ) memcpy(Ctx->Buffer, data, len);
-}
-
-
-static void Sha256Finish(Sha256Ctx *Ctx, BYTE *hash)
-{
-    unsigned int  i, b_len = Ctx->Len & 63;
-
-    Ctx->Buffer[ b_len ] = 0x80;
-    if ( b_len ^ 63 ) memset(Ctx->Buffer + b_len + 1, 0, b_len ^ 63);
-
-    if ( b_len >= 56 )
-    {
-        Sha256ProcessBlock(Ctx, Ctx->Buffer);
-        memset(Ctx->Buffer, 0, 56);
-    }
-
-    //PUT_UAA64BE(Ctx->Buffer, (unsigned long long)(Ctx->Len * 8), 7);
-    ((uint64_t*)Ctx->Buffer)[7] = std::byteswap((uint64_t)Ctx->Len << 3);
+  if (r_len < 64) {
+    memcpy(Ctx->Buffer + b_len, data, r_len);
+    len -= r_len;
+    data += r_len;
     Sha256ProcessBlock(Ctx, Ctx->Buffer);
+  }
 
-    for (i = 0; i < 8; i++)
-        //PUT_UAA32BE(hash, Ctx->State[i], i);
-        ((DWORD*)hash)[i] = std::byteswap(Ctx->State[i]);
+  for (; len >= 64; len -= 64, data += 64)
+    Sha256ProcessBlock(Ctx, data);
 
+  if (len)
+    memcpy(Ctx->Buffer, data, len);
 }
 
-void Sha256(BYTE *data, size_t len, BYTE *hash)
-{
-    Sha256Ctx Ctx;
+static void Sha256Finish(Sha256Ctx *Ctx, BYTE *hash) {
+  unsigned int i, b_len = Ctx->Len & 63;
 
-    Sha256Init(&Ctx);
-    Sha256Update(&Ctx, data, len);
-    Sha256Finish(&Ctx, hash);
+  Ctx->Buffer[b_len] = 0x80;
+  if (b_len ^ 63)
+    memset(Ctx->Buffer + b_len + 1, 0, b_len ^ 63);
+
+  if (b_len >= 56) {
+    Sha256ProcessBlock(Ctx, Ctx->Buffer);
+    memset(Ctx->Buffer, 0, 56);
+  }
+
+  // PUT_UAA64BE(Ctx->Buffer, (unsigned long long)(Ctx->Len * 8), 7);
+  ((uint64_t *)Ctx->Buffer)[7] = std::byteswap((uint64_t)Ctx->Len << 3);
+  Sha256ProcessBlock(Ctx, Ctx->Buffer);
+
+  for (i = 0; i < 8; i++)
+    // PUT_UAA32BE(hash, Ctx->State[i], i);
+    ((DWORD *)hash)[i] = std::byteswap(Ctx->State[i]);
+}
+
+void Sha256(BYTE *data, size_t len, BYTE *hash) {
+  Sha256Ctx Ctx;
+
+  Sha256Init(&Ctx);
+  Sha256Update(&Ctx, data, len);
+  Sha256Finish(&Ctx, hash);
 }
