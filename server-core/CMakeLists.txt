@@ -15,3 +15,4 @@ file(GLOB SOURCES src/*.cpp src/*/*.cpp src/*/*/*.cpp)
 add_executable(server-core ${SOURCES})
 
 target_link_libraries(server-core ${used_libs})
+target_precompile_headers(server-core PUBLIC src/server-core.hpp PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
