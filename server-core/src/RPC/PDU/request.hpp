@@ -40,8 +40,6 @@ struct Request {
    * field is non-zero */
   dce_uuid_t object_uuid; /* object UUID */
 
-  /* 8-octet alignment might be present here */
-
   std::vector<byte> stub;
 
   Request(const std::vector<byte> &rawPDU);
