@@ -184,3 +184,26 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# TypeScript v1 declaration files
+typings/
+
+# dotenv environment variables file
+.env
+.env.test
+
+# nuxt.js build output
+.nuxt
+
+# Webpack
+.webpack/
+
+# Vite
+.vite/
+
+# Electron-Forge
+out/
