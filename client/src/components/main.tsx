@@ -2,6 +2,7 @@
 // (C) Martin Alebachew, 2023
 
 import { IActivationInfo } from "../helpers/activation";
+import Button from "@mui/material/Button";
 
 function ActivationDetail({field, value}: {field: string, value: string}) {
   return (
@@ -57,18 +58,17 @@ export default function Main({activationInfo, setLoadingScreen, refreshActivatio
       <ActivationDetail field={"Server ePID"} value={activationInfo.kmsHostMachineEPID} />
 
       
-      <h3>Activation Actions!</h3>
-
-      <div>
-        <button>Activate Windows</button>
-      </div>
+      <h3>Windows Activation</h3>
 
       <div>
         <button
           onClick={() => {rearmMachineCallback(setLoadingScreen)}}>
-          Rearm Machine License</button>
-        <button>Change License To GVLK</button>
-        <button 
+          Rearm Machine License
+        </button>
+
+        <button>Change License Manually</button>
+
+        <button
           onClick={() => {forceRefreshCallback(setLoadingScreen, refreshActivationData)}}>
           Force Refresh Activation
         </button>

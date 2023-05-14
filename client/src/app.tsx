@@ -5,6 +5,10 @@ import { createRoot } from "react-dom/client";
 import { useState, useMemo } from "react";
 import ReactLoading from "react-loading";
 
+import { theme } from "./theme";
+import { ThemeProvider } from "@mui/material/styles";
+
+
 import { IActivationInfo } from "./helpers/activation";
 import Main from "./components/main";
 
@@ -32,16 +36,18 @@ function App() {
         <p>{loadingLabel}</p>
       </div>
     ) : (
-      <Main 
-        activationInfo={activationData}
-        setLoadingScreen={(state: boolean, label: string) => {
-          setLoading(state);
-          setLoadingLabel(state ? label : "");
-        }}
-    
-        refreshActivationData={() => {
-          setRefreshData(!refreshData);
-        }} />
+      <ThemeProvider theme={theme}>
+        <Main 
+          activationInfo={activationData}
+          setLoadingScreen={(state: boolean, label: string) => {
+            setLoading(state);
+            setLoadingLabel(state ? label : "");
+          }}
+      
+          refreshActivationData={() => {
+            setRefreshData(!refreshData);
+          }}/>
+        </ThemeProvider>
     )
   );
 }
