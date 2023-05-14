@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Satoshi';
+  font-weight: bold;
+  src: url('../assets/fonts/Satoshi-Light.otf');
+}
+
 body {
   font-family: "Satoshi", sans-serif;
   margin: auto;
