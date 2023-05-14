@@ -10,26 +10,31 @@ import Main from "./components/main";
 
 function App() {
   const [activationData, setActivationData] = useState({} as IActivationInfo);
-  const [done, setDone] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingLabel, setLoadingLabel] = useState("Loading...");
 
   useEffect(() => {
     activation.getInfo()
     .then((activationInfo: IActivationInfo) => {
       setActivationData(activationInfo);
-      setDone(true);
+      setLoading(false);
     });
    }, [])
   
   return (
-    !done ? (
+    loading ? (
       <div className="center">
         <ReactLoading
           type={"spin"}
           color={"#21BE72"}
         />
+        <p>{loadingLabel}</p>
       </div>
     ) : (
-      <Main activationInfo={activationData} />
+      <Main activationInfo={activationData} setLoadingScreen={(state: boolean, label: string) => {
+        setLoading(state);
+        setLoadingLabel(state ? label : "");
+      }} />
     )
   );
 }
