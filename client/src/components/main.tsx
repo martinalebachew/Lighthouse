@@ -2,16 +2,7 @@
 // (C) Martin Alebachew, 2023
 
 import { IActivationInfo } from "../helpers/activation";
-import Button from "@mui/material/Button";
-
-function ActivationDetail({field, value}: {field: string, value: string}) {
-  return (
-    <div>
-      <span>{field}</span>
-      <span className="pad-left-two-rem">{value}</span>
-    </div>
-  );
-}
+import ActivationDetail from "./activation_detail";
 
 function forceRefreshCallback(setLoadingScreen: Function, refreshActivationData: Function) {
   setLoadingScreen(true, "Activating...");
