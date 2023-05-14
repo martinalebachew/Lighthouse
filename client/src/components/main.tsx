@@ -17,13 +17,7 @@ export default function Main({activationInfo} : {activationInfo: IActivationInfo
     <div>
       <h1 style={{fontWeight:500}}>Lighthouse Client</h1>
 
-      <div>
-        <h3>KMS Server IP Address</h3>
-        <input style={{ display: "inline-block" }} />
-        <button>Save</button>
-      </div>
-
-      <h3>Activation Details</h3>
+      <h3>Client Details</h3>
 
       <ActivationDetail field={"License Status"} value={activationInfo.licenseStatus} />
       <ActivationDetail field={"Volume Licensed?"} value={activationInfo.isVolumeLicense ? "Yes" : "No"} />
@@ -36,6 +30,9 @@ export default function Main({activationInfo} : {activationInfo: IActivationInfo
       <ActivationDetail field={"Machine ID"} value={activationInfo.clientMachineID} />
       <ActivationDetail field={"Activation Interval"} value={activationInfo.activationInterval} />
       <ActivationDetail field={"Renewal Interval"} value={activationInfo.renewalInterval} />
+
+      <h3>Server Details</h3>
+
       <ActivationDetail field={"Server Machine Name"} value={activationInfo.kmsHostMachineName} />
       <ActivationDetail field={"Server Machine Address"} value={activationInfo.kmsHostMachineAddress} />
       <ActivationDetail field={"Server ePID"} value={activationInfo.kmsHostMachineEPID} />
