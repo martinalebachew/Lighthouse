@@ -29,7 +29,7 @@ export async function getActivationInfo() : Promise<IActivationInfo> {
       }
 
       let activationInfo: IActivationInfo = {
-        isVolumeLicense: licenseDict["Description"].includes("VOLUME_KMSCLIENT"),
+        isVolumeLicense: licenseDict["Description"] && licenseDict["Description"].includes("VOLUME_KMSCLIENT"),
         volumeExpiration: licenseDict["Volume activation expiration"],
         licenseStatus: licenseDict["License Status"],
 
@@ -50,6 +50,14 @@ export async function forceActivate() : Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     exec("cscript %windir%\\System32\\slmgr.vbs /ato", (error, stdout, stderr) => {
       resolve(!error && stdout.includes("Product activated successfully."));
+    })
+  });
+}
+
+export async function rearm() : Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    exec("cscript %windir%\\System32\\slmgr.vbs /rearm", (error, stdout, stderr) => {
+      resolve(!error && stdout.includes("Command completed successfully."));
     })
   });
 }

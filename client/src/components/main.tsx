@@ -21,6 +21,15 @@ function forceRefreshCallback(setLoadingScreen: Function) {
   });
 }
 
+function rearmMachineCallback(setLoadingScreen: Function) {
+  setLoadingScreen(true, "Rearming...");
+  activation.rearm()
+  .then((rearmed: boolean) => {
+    alert(rearmed ? "Please restart this machine to complete the rearming process." : "Failed to rearm!");
+    setLoadingScreen(false);
+  });
+}
+
 export default function Main({activationInfo, setLoadingScreen} : {activationInfo: IActivationInfo, setLoadingScreen: Function}) {
   return (
     <div>
@@ -54,11 +63,12 @@ export default function Main({activationInfo, setLoadingScreen} : {activationInf
       </div>
 
       <div>
-        <button>Rearm Machine License</button>
+        <button
+          onClick={() => {rearmMachineCallback(setLoadingScreen)}}>
+          Rearm Machine License</button>
         <button>Change License To GVLK</button>
         <button 
-          onClick={() => {forceRefreshCallback(setLoadingScreen)}}
-          id="forceRefreshButton">
+          onClick={() => {forceRefreshCallback(setLoadingScreen)}}>
           Force Refresh Activation
         </button>
       </div>
