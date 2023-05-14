@@ -3,13 +3,41 @@
 
 import { execSync } from 'child_process';
 
-export function getActivationStatus() {
+export interface IActivationInfo {
+  isVolumeLicense: boolean;
+  volumeExpiration: string;
+  licenseStatus: string;
+  clientMachineID: string;
+  activationInterval: string;
+  renewalInterval: string;
+  kmsHostMachineName: string;
+  kmsHostMachineAddress: string;
+  kmsHostMachineEPID: string;
+}
+
+export function getActivationStatus() : IActivationInfo {
   const stdout = execSync(`cscript %windir%\\System32\\slmgr.vbs /dli`).toString();
-  console.log(stdout);
 
   const lines = stdout.split("\n");
-  for (const line of lines)
-    if (line.includes("License Status: ")) return line.split(": ")[1];
+  let licenseDict : { [key: string]: string } = {};
 
-  return "Unknown";
+  for (const line of lines) {
+    const pair = line.split(": ");
+    licenseDict[pair[0].trimStart()] = pair[1];
+  }
+
+  let activationInfo: IActivationInfo = {
+    isVolumeLicense: licenseDict["Description"].includes("VOLUME_KMSCLIENT"),
+    volumeExpiration: licenseDict["Volume activation expiration"],
+    licenseStatus: licenseDict["License Status"],
+
+    clientMachineID: licenseDict["Client Machine ID (CMID)"],
+    activationInterval: licenseDict["Activation interval"],
+    renewalInterval: licenseDict["Renewal interval"],
+    kmsHostMachineName: licenseDict["Registered KMS machine name"],
+    kmsHostMachineAddress: licenseDict["KMS machine IP address"],
+    kmsHostMachineEPID: licenseDict["KMS machine extended PID"]
+  };
+
+  return activationInfo;
 }

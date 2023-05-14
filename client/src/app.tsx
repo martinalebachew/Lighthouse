@@ -4,13 +4,15 @@
 import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 
+import { IActivationInfo } from "./helpers";
+
 function App() {
   const [status, setStatus] = useState();
 
   useEffect(() => {
     activation.getStatus()
-    .then(data =>
-      setStatus(data)
+    .then((activationInfo: IActivationInfo) =>
+      setStatus(activationInfo.licenseStatus)
     );
    }, [])
   
