@@ -5,5 +5,5 @@ const { contextBridge, ipcRenderer } = require("electron");
 import { IActivationInfo } from "./helpers";
 
 contextBridge.exposeInMainWorld("activation", {
-  getStatus: () : Promise<IActivationInfo> => ipcRenderer.invoke("get-activation-status"),
+  getInfo: () : Promise<IActivationInfo> => ipcRenderer.invoke("get-activation-info"),
 })
