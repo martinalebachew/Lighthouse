@@ -3,6 +3,7 @@
 
 import { IActivationInfo } from "../helpers/activation";
 import ActivationDetail from "./activation_detail";
+import ActivationButton from "./activation_button";
 
 function forceRefreshCallback(setLoadingScreen: Function, refreshActivationData: Function) {
   setLoadingScreen(true, "Activating...");
@@ -48,21 +49,13 @@ export default function Main({activationInfo, setLoadingScreen, refreshActivatio
       <ActivationDetail field={"Server Machine Address"} value={activationInfo.kmsHostMachineAddress} />
       <ActivationDetail field={"Server ePID"} value={activationInfo.kmsHostMachineEPID} />
 
-      
+
       <h3>Windows Activation</h3>
-
       <div>
-        <button
-          onClick={() => {rearmMachineCallback(setLoadingScreen)}}>
-          Rearm Machine License
-        </button>
-
-        <button>Change License Manually</button>
-
-        <button
-          onClick={() => {forceRefreshCallback(setLoadingScreen, refreshActivationData)}}>
-          Force Refresh Activation
-        </button>
+        <ActivationButton label={"Rearm License"} callback={() => {rearmMachineCallback(setLoadingScreen)}} />
+        <ActivationButton label={"Install Product Key"} callback={() => {}} />
+        <ActivationButton label={"Uninstall Product Key"} callback={() => {}} />
+        <ActivationButton label={"Force Refresh Activation"} callback={() => {forceRefreshCallback(setLoadingScreen, refreshActivationData)}} />
       </div>
     </div>
   );
