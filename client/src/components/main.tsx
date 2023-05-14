@@ -12,11 +12,12 @@ function ActivationDetail({field, value}: {field: string, value: string}) {
   );
 }
 
-function forceRefreshCallback(setLoadingScreen: Function) {
+function forceRefreshCallback(setLoadingScreen: Function, refreshActivationData: Function) {
   setLoadingScreen(true, "Activating...");
   activation.forceActivate()
   .then((activated: boolean) => {
     alert(activated ? "Activated successfully!" : "Failed to activate!");
+    refreshActivationData();
     setLoadingScreen(false);
   });
 }
@@ -30,7 +31,7 @@ function rearmMachineCallback(setLoadingScreen: Function) {
   });
 }
 
-export default function Main({activationInfo, setLoadingScreen} : {activationInfo: IActivationInfo, setLoadingScreen: Function}) {
+export default function Main({activationInfo, setLoadingScreen, refreshActivationData} : {activationInfo: IActivationInfo, setLoadingScreen: Function, refreshActivationData: Function}) {
   return (
     <div>
       <h1 style={{fontWeight:500}}>Lighthouse Client</h1>
@@ -68,7 +69,7 @@ export default function Main({activationInfo, setLoadingScreen} : {activationInf
           Rearm Machine License</button>
         <button>Change License To GVLK</button>
         <button 
-          onClick={() => {forceRefreshCallback(setLoadingScreen)}}>
+          onClick={() => {forceRefreshCallback(setLoadingScreen, refreshActivationData)}}>
           Force Refresh Activation
         </button>
       </div>

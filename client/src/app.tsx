@@ -2,7 +2,7 @@
 // (C) Martin Alebachew, 2023
 
 import { createRoot } from "react-dom/client";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import ReactLoading from "react-loading";
 
 import { IActivationInfo } from "./helpers/activation";
@@ -13,13 +13,14 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [loadingLabel, setLoadingLabel] = useState("Loading...");
 
-  useEffect(() => {
+  const [refreshData, setRefreshData] = useState(true);
+  useMemo(() => {
     activation.getInfo()
     .then((activationInfo: IActivationInfo) => {
       setActivationData(activationInfo);
       setLoading(false);
     });
-   }, [])
+   }, [refreshData]);
   
   return (
     loading ? (
@@ -31,10 +32,16 @@ function App() {
         <p>{loadingLabel}</p>
       </div>
     ) : (
-      <Main activationInfo={activationData} setLoadingScreen={(state: boolean, label: string) => {
-        setLoading(state);
-        setLoadingLabel(state ? label : "");
-      }} />
+      <Main 
+        activationInfo={activationData}
+        setLoadingScreen={(state: boolean, label: string) => {
+          setLoading(state);
+          setLoadingLabel(state ? label : "");
+        }}
+    
+        refreshActivationData={() => {
+          setRefreshData(!refreshData);
+        }} />
     )
   );
 }
