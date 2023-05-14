@@ -1,2 +1,8 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+// preload.ts
+// (C) Martin Alebachew, 2023 
+
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("activation", {
+  getStatus: () => ipcRenderer.invoke("get-activation-status"),
+})

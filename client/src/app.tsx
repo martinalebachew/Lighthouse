@@ -1,6 +1,19 @@
+// app.tsx
+// (C) Martin Alebachew, 2023
+
 import { createRoot } from "react-dom/client";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [status, setStatus] = useState();
+
+  useEffect(() => {
+    activation.getStatus()
+    .then(data =>
+      setStatus(data)
+    );
+   }, [])
+  
   return (
     <div>
       <h1>Ligthouse Client</h1>
@@ -13,7 +26,7 @@ function App() {
 
       <div>
         <h3>Activation Status</h3>
-        <h4>Activated :D</h4>
+        <h4>{status}</h4>
       </div>
 
       <div>
