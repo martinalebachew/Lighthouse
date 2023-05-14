@@ -2,6 +2,11 @@
 // (C) Martin Alebachew, 2023
 
 import { exec } from "child_process";
+import { exec as sudoExec } from "sudo-prompt";
+
+const sudoOptions = {
+  name: "Lighthouse Client"
+};
 
 export interface IActivationInfo {
   isVolumeLicense: boolean;
@@ -56,7 +61,7 @@ export async function forceActivate() : Promise<boolean> {
 
 export async function rearm() : Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
-    exec("cscript %windir%\\System32\\slmgr.vbs /rearm", (error, stdout, stderr) => {
+    sudoExec("cscript %windir%\\System32\\slmgr.vbs /rearm", sudoOptions, (error, stdout, stderr) => {
       resolve(!error && stdout.includes("Command completed successfully."));
     })
   });
