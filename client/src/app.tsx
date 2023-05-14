@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 import ReactLoading from "react-loading";
 
-import { IActivationInfo } from "./activation";
+import { IActivationInfo } from "./helpers/activation";
 import Main from "./components/main";
 
 function App() {

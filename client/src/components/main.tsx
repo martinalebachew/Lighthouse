@@ -1,7 +1,7 @@
 // main.tsx
 // (C) Martin Alebachew, 2023
 
-import { IActivationInfo } from "../activation";
+import { IActivationInfo } from "../helpers/activation";
 
 function ActivationDetail({field, value}: {field: string, value: string}) {
   return (
