@@ -1,7 +1,7 @@
-// helpers.ts
+// activation.ts
 // (C) Martin Alebachew, 2023
 
-import { execSync } from 'child_process';
+import { execSync } from "child_process";
 
 export interface IActivationInfo {
   isVolumeLicense: boolean;
@@ -15,8 +15,8 @@ export interface IActivationInfo {
   kmsHostMachineEPID: string;
 }
 
-export function getActivationStatus() : IActivationInfo {
-  const stdout = execSync(`cscript %windir%\\System32\\slmgr.vbs /dli`).toString();
+export function getActivationInfo() : IActivationInfo {
+  const stdout = execSync("cscript %windir%\\System32\\slmgr.vbs /dli").toString();
 
   const lines = stdout.split("\n");
   let licenseDict : { [key: string]: string } = {};
