@@ -18,14 +18,14 @@ This file contains modified Wind4/vlmcsd implementation of HMAC.
 
 struct PACKED64
 {
-	uint64_t val[0];
+    uint64_t val[0];
 } __attribute__((packed));
 
 #define GET_UA64LE(p) (((PACKED64*)p)->val[0])
 
 typedef struct {
-	Sha256Ctx  ShaCtx;
-	BYTE  OPad[64];
+    Sha256Ctx  ShaCtx;
+    BYTE  OPad[64];
 } Sha256HmacCtx;
 
 int_fast8_t Sha256Hmac(BYTE* key, BYTE* __restrict__ data, DWORD len, BYTE* __restrict__ hmac);

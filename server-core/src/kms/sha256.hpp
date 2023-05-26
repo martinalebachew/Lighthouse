@@ -21,9 +21,9 @@ This file contains modified Wind4/vlmcsd implementation of SHA256.
 #define SI4(x)  ( ROR32(x, 17) ^ ROR32(x, 19) ^ ((x) >> 10) )
 
 typedef struct {
-	DWORD  State[8];
-	BYTE   Buffer[64];
-	unsigned int  Len;
+    DWORD  State[8];
+    BYTE   Buffer[64];
+    unsigned int  Len;
 } Sha256Ctx;
 
 void Sha256Init(Sha256Ctx *Ctx);

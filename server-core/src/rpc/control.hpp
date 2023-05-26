@@ -16,9 +16,9 @@ wrapper.
 
 namespace RPC::Control {
 struct Conversation {
-  std::vector<byte> ReceiveFragment(boost::asio::ip::tcp::socket &socket);
-  std::vector<byte> ReceivePDU(boost::asio::ip::tcp::socket &socket);
-  void SendFragment(boost::asio::ip::tcp::socket &socket, std::vector<byte> fragment);
-  void SendPDU(boost::asio::ip::tcp::socket &socket, std::vector<byte> pdu);
+    std::vector<byte> ReceiveFragment(boost::asio::ip::tcp::socket &socket);
+    std::vector<byte> ReceivePDU(boost::asio::ip::tcp::socket &socket);
+    void SendFragment(boost::asio::ip::tcp::socket &socket, std::vector<byte> fragment);
+    void SendPDU(boost::asio::ip::tcp::socket &socket, std::vector<byte> pdu);
 };
 } // namespace RPC::Control

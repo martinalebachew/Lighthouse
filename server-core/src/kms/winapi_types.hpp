@@ -16,15 +16,15 @@ typedef unsigned char byte;
 typedef byte BYTE;
 
 struct GUID {
-  uint32_t Data1;
-  uint16_t Data2;
-  uint16_t Data3;
-  byte      Data4[8];
+    uint32_t Data1;
+    uint16_t Data2;
+    uint16_t Data3;
+    byte      Data4[8];
 
-  std::string toString();
+    std::string toString();
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
 
 struct FILETIME {
-  DWORD dwLowDateTime;
-  DWORD dwHighDateTime;
+    DWORD dwLowDateTime;
+    DWORD dwHighDateTime;
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.

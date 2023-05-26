@@ -17,8 +17,8 @@ This file contains modified Wind4/vlmcsd implementations of AES.
 #define ROR32(v, n) ( (v) << (32 - n) | (v) >> n )
 
 typedef struct {
-	DWORD Key[48]; // Supports a maximum of 160 key bits!
-	uint_fast8_t rounds;
+    DWORD Key[48]; // Supports a maximum of 160 key bits!
+    uint_fast8_t rounds;
 } AesCtx;
 
 const std::vector<BYTE> KeyV6 = {	0xA9, 0x4A, 0x41, 0x95, 0xE2, 0x01, 0x43, 0x2D, 0x9B, 0xCB, 0x46, 0x04, 0x05, 0xD8, 0x4A, 0x21 };
