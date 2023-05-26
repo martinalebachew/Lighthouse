@@ -1,7 +1,7 @@
-// server-core.cpp
+// core.cpp
 // (C) Martin Alebachew, 2023
 
-#include "server-core.hpp"
+#include "core.hpp"
 
 int main(int argc, const char *argv[]) {
   std::cout << "Lighthouse Server Core\n"
