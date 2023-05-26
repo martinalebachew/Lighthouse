@@ -43,5 +43,6 @@ struct Request {
   std::vector<byte> stub;
 
   Request(const std::vector<byte> &rawPDU);
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace RPC::PDU

@@ -6,10 +6,10 @@ This files defines the RPC response PDU wrapper struct.
 */
 
 #pragma once
-#include "request.hpp"
-#include "shared.hpp"
 #include "../primitives.hpp"
 #include "../uuid.hpp"
+#include "request.hpp"
+#include "shared.hpp"
 #include <vector>
 
 namespace RPC::PDU {
@@ -30,14 +30,15 @@ struct Response {
   u_int32 call_id;         /* call identifier */
   /* end common fields */
 
-  u_int32 alloc_hint = 0; /* allocation hint */
+  u_int32 alloc_hint = 0;       /* allocation hint */
   p_context_id_t p_cont_id = 0; /* pres context, i.e. data rep */
-  u_int8 cancel_count = 0; /* cancel count */
-  u_int8 reserved; /* reserved, m.b.z. */
+  u_int8 cancel_count = 0;      /* cancel count */
+  u_int8 reserved;              /* reserved, m.b.z. */
 
   std::vector<byte> stub;
 
   Response(Request &request, std::vector<byte> responseStub);
   std::vector<byte> toBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace RPC::PDU

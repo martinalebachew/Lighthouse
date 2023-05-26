@@ -14,13 +14,14 @@ Response::Response(Request &request, std::vector<byte> responseStub) {
   // data representation of the client, as specified in the bind PDU
   memcpy(packed_drep, request.packed_drep, 4);
 
-  call_id = request.call_id; // This value is set by the client  
+  call_id = request.call_id; // This value is set by the client
   stub = responseStub;
 }
 
 std::vector<byte> Response::toBuffer() {
   frag_length = offsetof(Response, stub) + stub.size();
-  alloc_hint = stub.size(); // Irrelevant since fragmented requests are not implemented
+  alloc_hint =
+      stub.size(); // Irrelevant since fragmented requests are not implemented
 
   std::vector<byte> buffer = std::vector<byte>(frag_length);
   memcpy(buffer.data(), this, offsetof(Response, stub));

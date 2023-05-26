@@ -19,12 +19,14 @@ struct GUID {
   uint32_t Data1;
   uint16_t Data2;
   uint16_t Data3;
-  byte      Data4[8];
+  byte Data4[8];
 
   std::string toString();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
 
 struct FILETIME {
   DWORD dwLowDateTime;
   DWORD dwHighDateTime;
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.

@@ -9,9 +9,9 @@ This file defines the RPC request PDU wrapper struct.
 
 namespace RPC::PDU {
 Request::Request(const std::vector<byte> &rawPDU) {
-  memcpy(this, // Copy into the beginning of this structure
-          rawPDU.data(), // Copy from the beginning of the raw PDU
-          offsetof(Request, object_uuid) // Copy all fixed-size properties,
+  memcpy(this,          // Copy into the beginning of this structure
+         rawPDU.data(), // Copy from the beginning of the raw PDU
+         offsetof(Request, object_uuid) // Copy all fixed-size properties,
   );
 
   // Calculate stub length
@@ -21,7 +21,7 @@ Request::Request(const std::vector<byte> &rawPDU) {
   if (pfc_flags & PFC_OBJECT_UUID) {
     // Copy object_uuid from the raw PDU
     memcpy(&object_uuid, rawPDU.data() + offsetof(Request, object_uuid),
-            sizeof(object_uuid));
+           sizeof(object_uuid));
 
     // Subtract object_uuid length, as it is present in the raw PDU
     stubLength -= sizeof(object_uuid);

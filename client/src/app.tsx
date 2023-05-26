@@ -25,7 +25,7 @@ function App() {
       setLoading(false);
     });
    }, [refreshData]);
-  
+
   return (
     loading ? (
       <div className="center">
@@ -37,13 +37,13 @@ function App() {
       </div>
     ) : (
       <ThemeProvider theme={theme}>
-        <Main 
+        <Main
           activationInfo={activationData}
           setLoadingScreen={(state: boolean, label: string) => {
             setLoading(state);
             setLoadingLabel(state ? label : "");
           }}
-      
+
           refreshActivationData={() => {
             setRefreshData(!refreshData);
           }}/>

@@ -33,7 +33,7 @@ export default function Main({activationInfo, setLoadingScreen, refreshActivatio
 
       <ActivationDetail field={"License Status"} value={activationInfo.licenseStatus} />
       <ActivationDetail field={"Volume Licensed?"} value={activationInfo.isVolumeLicense ? "Yes" : "No"} />
-      
+
       {
         activationInfo.isVolumeLicense &&
         <ActivationDetail field={"Volume Expiration"} value={activationInfo.volumeExpiration} />

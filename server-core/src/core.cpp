@@ -14,10 +14,12 @@ int main(int argc, const char *argv[]) {
 
   while (true) { // TODO: replace iterative server with asynchronous server
     // 1. Establish TCP connection with client
-    auto socket_ptr = std::make_shared<boost::asio::ip::tcp::socket>(io_context);
+    auto socket_ptr =
+        std::make_shared<boost::asio::ip::tcp::socket>(io_context);
     tcp::endpoint peer_endpoint;
     acceptor.accept(*socket_ptr, peer_endpoint);
-    std::cout << "\n[TCP] Accepted connection from " << peer_endpoint << std::endl;
+    std::cout << "\n[TCP] Accepted connection from " << peer_endpoint
+              << std::endl;
 
     // 2. RPC-Bind with the client
     Control::Conversation conversation;
@@ -35,7 +37,7 @@ int main(int argc, const char *argv[]) {
     auto kmsResponse = KMS::Response(kmsRequest);
     PDU::Response response(request, kmsResponse.toEncryptedBuffer());
     conversation.SendPDU(*socket_ptr, response.toBuffer());
-    
+
     socket_ptr->close();
     std::cout << "[TCP] Closed connection from " << peer_endpoint << std::endl;
   }

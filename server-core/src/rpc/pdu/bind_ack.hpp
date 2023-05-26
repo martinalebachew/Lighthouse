@@ -94,5 +94,6 @@ struct BindAck {
   BindAck(Bind &bind, u_int16 port);
   ~BindAck();
   std::vector<byte> toBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+} __attribute__((
+    packed)); // Disabling compiler alignment in favor of RPC alignment.
 } // namespace RPC::PDU
