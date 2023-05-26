@@ -9,16 +9,16 @@ This file defines the WinAPI types required for KMS.
 #include <cstdint>
 #include <iostream>
 
-typedef u_int16_t WORD;
-typedef u_int32_t DWORD;
+typedef uint16_t WORD;
+typedef uint32_t DWORD;
 typedef char16_t WCHAR;
 typedef unsigned char byte;
 typedef byte BYTE;
 
 struct GUID {
-  u_int32_t Data1;
-  u_int16_t Data2;
-  u_int16_t Data3;
+  uint32_t Data1;
+  uint16_t Data2;
+  uint16_t Data3;
   byte      Data4[8];
 
   std::string toString();

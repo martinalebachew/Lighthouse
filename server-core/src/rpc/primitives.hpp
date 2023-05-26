@@ -42,14 +42,14 @@ typedef int32_t IBM_SHORT;
 typedef int64_t IBM_LONG;
 
 // C706 §12.6.3.1 Declarations
-typedef SMALL int8;
-typedef SHORT int16;
-typedef LONG int32;
-typedef HYPER int64;
+typedef int8_t int8;
+typedef int16_t int16;
+typedef int32_t int32;
+typedef int64_t int64;
 
-typedef UNSIGNED_SMALL u_int8;
-typedef UNSIGNED_SHORT u_int16;
-typedef UNSIGNED_LONG u_int32;
-typedef UNSIGNED_HYPER u_int64;
+typedef uint8_t u_int8;
+typedef uint16_t u_int16;
+typedef uint32_t u_int32;
+typedef uint64_t u_int64;
 
 typedef unsigned char byte;

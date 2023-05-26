@@ -8,10 +8,11 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 
 #pragma once
 #include "winapi_types.hpp"
-#include "hmac.hpp"
 #include "request.hpp"
 #include "crypto.hpp"
+#include "hmac.hpp"
 #include <vector>
+#include <cstdint>
 
 namespace KMS {
 struct Response {
@@ -20,9 +21,9 @@ struct Response {
      Adjust it accordingly.
   */
 
-  u_int32_t bodyLength1;
-  u_int32_t _ = 131072; // TODO: Figure out the purpose of this field
-  u_int32_t bodyLength2;
+  uint32_t bodyLength1;
+  uint32_t value = 131072; // TODO: Figure out the purpose of this field
+  uint32_t bodyLength2;
 
   /* UNENCRYPTED */
   VERSION RawVersion; // Minor and major version, unencrypted

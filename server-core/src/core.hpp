@@ -1,14 +1,14 @@
-// server-core.hpp
+// core.hpp
 // (C) Martin Alebachew, 2023
 
 #pragma once
-#include "RPC/control.hpp"
-#include "RPC/PDU/bind.hpp"
-#include "RPC/PDU/bind_ack.hpp"
-#include "RPC/PDU/request.hpp"
-#include "RPC/PDU/response.hpp"
-#include "KMS/request.hpp"
-#include "KMS/response.hpp"
+#include "rpc/control.hpp"
+#include "rpc/pdu/bind.hpp"
+#include "rpc/pdu/bind_ack.hpp"
+#include "rpc/pdu/request.hpp"
+#include "rpc/pdu/response.hpp"
+#include "kms/request.hpp"
+#include "kms/response.hpp"
 #include <boost/asio.hpp>
 #include <iostream>
 
