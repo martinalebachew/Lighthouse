@@ -12,7 +12,14 @@ find_package(Boost REQUIRED COMPONENTS system)  # thread regex
 set(used_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY}
 
 file(GLOB CORE_SOURCES src/core.cpp src/*/*.cpp src/*/*/*.cpp)
-add_executable(core ${CORE_SOURCES})
+file(GLOB INTERFACE_SOURCES src/interface.cpp src/*/*.cpp src/*/*/*.cpp)
 
+add_executable(core ${CORE_SOURCES})
+add_executable(interface ${INTERFACE_SOURCES})
+
+find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(core ${used_libs})
-target_precompile_headers(core PUBLIC src/core.hpp PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
+target_link_libraries(interface ${used_libs} nlohmann_json::nlohmann_json)
+
+target_precompile_headers(core PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
+target_precompile_headers(interface PRIVATE <iostream> <nlohmann/json.hpp>)
