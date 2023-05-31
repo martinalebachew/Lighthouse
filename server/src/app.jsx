@@ -1,8 +1,33 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
 
-function render() {
-  ReactDOM.render(<h2>Hello from React!</h2>, document.body);
+let items = [];
+
+function List() {
+  const [itemsInternal, setItemsInternal] = React.useState(items);
+
+  React.useEffect(() => {
+    window.addEventListener("message", (event) => {
+      const message = event.data;
+      if (event.source === window && message.type === "clientInfo") {
+        items = items.concat(message.message);
+        setItemsInternal(items);
+      }
+    });
+  }, []);
+  
+  const listItems = items.map((item) =>
+    <li key={item}>{item}</li>
+  );
+
+  return (
+    <ul>{listItems}</ul>
+  );
 }
 
-render();
+export function render() {
+  const root = createRoot(document.getElementById("root"));
+  root.render(<List />);
+
+  window.postMessage({ type: "domRendered" });
+}

@@ -1,13 +1,25 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+// main.js
+// (C) Martin Alebachew, 2023
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-  app.quit();
+const os = require("os");
+const es = require("event-stream");
+const { spawn } = require("child_process");
+const { app, BrowserWindow } = require("electron");
+
+function flushObjectToPipe(obj, pipe) {
+  // Convert object to string and calculate size prefix
+  const messageString = JSON.stringify(obj);
+  const sizeBuffer = Buffer.allocUnsafe(4); // allocUnsafe disables zeroing memory
+
+  if (os.endianness() === "LE") sizeBuffer.writeUInt32LE(messageString.length);
+  else sizeBuffer.writeUInt32BE(messageString.length);
+
+  // Print length and data to stdout
+  pipe.write(sizeBuffer);
+  pipe.write(messageString);
 }
 
-const createWindow = () => {
-  // Create the browser window.
+function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -16,34 +28,49 @@ const createWindow = () => {
     },
   });
 
-  // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
   mainWindow.webContents.openDevTools();
-};
+  return mainWindow.webContents;
+}
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+async function launchCoreBindings(webContents) {
+  const coreInterface = spawn("/Users/martin/Documents/Coding/Lighthouse/server-core/bin/interface");
+  flushObjectToPipe({ type: "ready" }, coreInterface.stdin);
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+  es.readable(function (count, processNextChunk) {
+    // Read message size as 32-bit unsigned integer from stdin, in host byte order
+    let sizeBuffer = coreInterface.stdout.read(4);
+    
+    while (sizeBuffer) {
+      const messageSize = os.endianness() === "LE" ? sizeBuffer.readUInt32LE() : sizeBuffer.readUInt32BE();
+      const messageString = coreInterface.stdout.read(messageSize).toString(); // Read rest of the message and convert to string
 
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
+      // TODO: Restore message size
+      if (!messageString) throw "Incomplete messages are not supported yet :(";
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+      const messageObject = JSON.parse(messageString);
+
+      // Allow interface termination at EOP message
+      if (messageObject["type"] === "EOP") {
+        flushObjectToPipe({}, coreInterface.stdin);
+        this.emit("end");
+        break;
+      }
+      this.emit("data", messageObject);
+      
+      sizeBuffer = coreInterface.stdout.read(4); // Continue loop
+    }
+    
+    processNextChunk();
+  }).on("data", function(messageObject) {
+    webContents.send(messageObject["type"], messageObject);
+  });
+}
+
+function startupSequence() {
+  const webContents = createWindow();
+  launchCoreBindings(webContents);
+}
+
+app.on("ready", startupSequence);
+app.on("window-all-closed", app.quit);

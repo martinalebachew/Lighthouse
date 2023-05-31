@@ -1,2 +1,21 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+// preload.js
+// (C) Martin Alebachew, 2023
+
+const { ipcRenderer } = require("electron");
+
+let domRendered = false;
+let messageQueue = [];
+
+window.addEventListener("message", (event) => {
+  const message = event.data;
+  if (event.source === window && message.type === "domRendered") {
+    domRendered = true;
+    for (const message of messageQueue) window.postMessage(message);
+    messageQueue = [];
+  }
+});
+
+ipcRenderer.on("clientInfo", (event, message) => {
+  if (domRendered) window.postMessage(message);
+  else messageQueue = messageQueue.concat(message);
+});

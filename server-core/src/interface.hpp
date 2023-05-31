@@ -3,6 +3,7 @@
 
 #pragma once
 #include <iostream>
+#include <unistd.h>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
