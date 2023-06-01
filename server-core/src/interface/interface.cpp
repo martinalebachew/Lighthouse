@@ -31,22 +31,3 @@ void flushObjectToStdout(json &object) {
 
   fflush(stdout);
 }
-
-int main() {
-  if (parseObjectFromStdin()["type"] != "ready") return -1;
-
-  for (int i = 1; i <= 20; i++) {
-    json obj;
-    obj["type"] = "clientInfo";
-    obj["message"] = (std::string)"message no. " + std::to_string(i);
-    flushObjectToStdout(obj);
-    sleep((i > 10) ? 1 : 0);
-  }
-
-  // End-of-Process (EOP) termination message, NodeJS workaround
-  // This allows us to make sure all output is passed to the GUI before termination
-  json EOP = R"({"EOP": true})"_json;
-  flushObjectToStdout(EOP);
-  parseObjectFromStdin(); // Wait for any valid message for confirmation
-  return 0;
-}

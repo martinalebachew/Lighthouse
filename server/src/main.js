@@ -34,7 +34,8 @@ function createWindow() {
 }
 
 async function launchCoreBindings(webContents) {
-  const coreInterface = spawn("/Users/martin/Documents/Coding/Lighthouse/server-core/bin/interface");
+  const corePath = "/Users/martin/Documents/Coding/Lighthouse/server-core/bin/core";
+  const coreInterface = spawn(corePath, ["interface"]);
   flushObjectToPipe({ type: "ready" }, coreInterface.stdin);
 
   es.readable(function (count, processNextChunk) {
@@ -46,7 +47,7 @@ async function launchCoreBindings(webContents) {
       const messageString = coreInterface.stdout.read(messageSize).toString(); // Read rest of the message and convert to string
 
       // TODO: Restore message size
-      if (!messageString) throw "Incomplete messages are not supported yet :(";
+      if (!messageString) throw new Error("Incomplete messages are not supported yet :(");
 
       const messageObject = JSON.parse(messageString);
 
@@ -63,7 +64,12 @@ async function launchCoreBindings(webContents) {
     
     processNextChunk();
   }).on("data", function(messageObject) {
-    webContents.send(messageObject["type"], messageObject);
+    webContents.send("messageFromCore", messageObject);
+  });
+  
+  coreInterface.on("exit", function(code, signal) {
+    if (signal !== "SIGINT" && signal !== "SIGTERM") // Not terminated by GUI
+      throw new Error(`Core interface terminated! exit code: ${code}, signal: ${signal}`);
   });
 
   process.on("exit", function() {

@@ -8,14 +8,14 @@ let messageQueue = [];
 
 window.addEventListener("message", (event) => {
   const message = event.data;
-  if (event.source === window && message.type === "domRendered") {
+  if (message.type === "domRendered") {
     domRendered = true;
     for (const message of messageQueue) window.postMessage(message);
     messageQueue = [];
   }
 });
 
-ipcRenderer.on("clientInfo", (event, message) => {
+ipcRenderer.on("messageFromCore", (event, message) => {
   if (domRendered) window.postMessage(message);
   else messageQueue = messageQueue.concat(message);
 });

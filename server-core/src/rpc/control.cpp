@@ -17,7 +17,7 @@ namespace RPC::Control {
     // endianness This only handles little endian to little endian
     size_t size = *(u_int16 *)(&fragment.at(HEAD_SIZE - 2));
     fragment.resize(size);
-    std::cout << "[RPC] >>> PDU Size: " << size << " bytes" << std::endl;
+    // std::cout << "[RPC] >>> PDU Size: " << size << " bytes" << std::endl;
 
     boost::asio::read(socket, boost::asio::buffer(fragment.data() + HEAD_SIZE * sizeof(fragment[0]), size - HEAD_SIZE)); // Receive rest of the fragment
     return fragment;
@@ -29,7 +29,7 @@ namespace RPC::Control {
   }
 
   void Conversation::SendFragment(boost::asio::ip::tcp::socket &socket, std::vector<byte> fragment) {
-    std::cout << "[RPC] <<< PDU Size: " << fragment.size() << " bytes" << std::endl;
+    // std::cout << "[RPC] <<< PDU Size: " << fragment.size() << " bytes" << std::endl;
     boost::asio::write(socket, boost::asio::buffer(fragment));
   }
 

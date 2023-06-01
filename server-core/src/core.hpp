@@ -9,9 +9,14 @@
 #include "rpc/pdu/response.hpp"
 #include "kms/request.hpp"
 #include "kms/response.hpp"
+#include "kms/winapi_types.hpp"
+#include "base64/wchar.hpp"
+#include "interface/interface.hpp"
 #include <boost/asio.hpp>
+#include <nlohmann/json.hpp>
 #include <iostream>
 
+using json = nlohmann::json;
 using boost::asio::ip::tcp;
 using namespace RPC;
 
