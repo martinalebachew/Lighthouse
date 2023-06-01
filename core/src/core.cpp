@@ -43,6 +43,16 @@ int main(int argc, const char* argv[]) {
 
     socketPtr->close();
     std::cout << "[TCP] Closed connection from " << peerEndpoint << std::endl;
+
+    // Print client information summary
+    std::cout
+      << "\n=================== " << peerEndpoint << " ===================\n"
+      << "Edition:         " << "N/A" << "\n"
+      << "Machine Name:    " << kmsRequest.GetWorkstationName() << "\n"
+      << "Machine ID:      " << kmsRequest.CMID.toString() << "\n"
+      << "KMS Version:     " << "6.0" << "\n"
+      << "Virtual Machine: " << (kmsRequest.VMInfo ? "Yes" : "No") << "\n"
+      << "=======================================================\n";
   }
 
   return 0;
