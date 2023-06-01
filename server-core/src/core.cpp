@@ -5,19 +5,19 @@
 
 int main(int argc, const char *argv[]) {
   std::cout << "Lighthouse Server Core\n"
-            << "By Martin Alebachew\n"
+            << "(C) Martin Alebachew, 2023\n"
             << std::endl;
 
-  boost::asio::io_context io_context;
-  tcp::acceptor acceptor(io_context, tcp::endpoint(tcp::v4(), port));
+  boost::asio::io_context ioContext;
+  tcp::acceptor acceptor(ioContext, tcp::endpoint(tcp::v4(), port));
   std::cout << "[TCP] Listening on port " << port << std::endl;
 
   while (true) { // TODO: replace iterative server with asynchronous server
     // 1. Establish TCP connection with client
-    auto socket_ptr = std::make_shared<boost::asio::ip::tcp::socket>(io_context);
-    tcp::endpoint peer_endpoint;
-    acceptor.accept(*socket_ptr, peer_endpoint);
-    std::cout << "\n[TCP] Accepted connection from " << peer_endpoint << std::endl;
+    auto socket_ptr = std::make_shared<boost::asio::ip::tcp::socket>(ioContext);
+    tcp::endpoint peerEndpoint;
+    acceptor.accept(*socket_ptr, peerEndpoint);
+    std::cout << "\n[TCP] Accepted connection from " << peerEndpoint << std::endl;
 
     // 2. RPC-Bind with the client
     Control::Conversation conversation;
@@ -37,6 +37,15 @@ int main(int argc, const char *argv[]) {
     conversation.SendPDU(*socket_ptr, response.toBuffer());
     
     socket_ptr->close();
-    std::cout << "[TCP] Closed connection from " << peer_endpoint << std::endl;
+    std::cout << "[TCP] Closed connection from " << peerEndpoint << std::endl;
+
+    // 5. Print client information summary
+    std::cout << "\n=================== " << peerEndpoint << " ===================\n"
+              << "Edition:         " << "N/A" << "\n"
+              << "Machine Name:    " << kmsRequest.GetWorkstationName() << "\n"
+              << "Machine ID:      " << kmsRequest.CMID.toString() << "\n"
+              << "KMS Version:     " << "6.0" << "\n"
+              << "Virtual Machine: " << (kmsRequest.VMInfo ? "Yes" : "No") << "\n"
+              << "=======================================================\n";
   }
 }
