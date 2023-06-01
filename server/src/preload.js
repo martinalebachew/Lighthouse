@@ -16,6 +16,7 @@ window.addEventListener("message", (event) => {
 });
 
 ipcRenderer.on("messageFromCore", (event, message) => {
+  if (message.hasOwnProperty("base64_message")) message.decoded = Buffer.from(message.base64_message, "base64").toString("utf8");
   if (domRendered) window.postMessage(message);
   else messageQueue = messageQueue.concat(message);
 });
