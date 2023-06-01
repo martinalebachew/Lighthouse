@@ -65,6 +65,10 @@ async function launchCoreBindings(webContents) {
   }).on("data", function(messageObject) {
     webContents.send(messageObject["type"], messageObject);
   });
+
+  process.on("exit", function() {
+    coreInterface.kill();
+  });
 }
 
 function startupSequence() {
