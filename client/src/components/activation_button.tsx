@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 
 export default function ActivationButton({label, callback}: {label: string, callback: () => {}}) {
   return (
-    <Button variant="outlined" onClick={callback}>
+    <Button variant="outlined" style={{marginRight: 10}} onClick={callback}>
       {label}
     </Button>
   );

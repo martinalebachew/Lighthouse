@@ -27,7 +27,7 @@ function rearmMachineCallback(setLoadingScreen: Function) {
 export default function Main({activationInfo, setLoadingScreen, refreshActivationData} : {activationInfo: IActivationInfo, setLoadingScreen: Function, refreshActivationData: Function}) {
   return (
     <div>
-      <h1 style={{fontWeight:500}}>Lighthouse Client</h1>
+      <h1>Lighthouse Client</h1>
 
       <h3>Client Details</h3>
 
@@ -54,7 +54,6 @@ export default function Main({activationInfo, setLoadingScreen, refreshActivatio
       <div>
         <ActivationButton label={"Rearm License"} callback={() => {rearmMachineCallback(setLoadingScreen)}} />
         <ActivationButton label={"Install Product Key"} callback={() => {}} />
-        <ActivationButton label={"Uninstall Product Key"} callback={() => {}} />
         <ActivationButton label={"Force Refresh Activation"} callback={() => {forceRefreshCallback(setLoadingScreen, refreshActivationData)}} />
       </div>
     </div>
