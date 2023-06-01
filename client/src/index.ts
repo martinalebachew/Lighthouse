@@ -18,7 +18,7 @@ const createWindow = (): void => {
     maximizable: false,
     fullscreenable: false,
     autoHideMenuBar: true,
-    
+
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
