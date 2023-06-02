@@ -49,6 +49,11 @@ h3 {
   transform: translate(-50%, -50%);
 }
 
+.centered {
+  display: flex;
+  justify-content: center;  
+}
+
 .pad-left-two-rem {
   padding-left: 2rem;
 }

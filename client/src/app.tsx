@@ -28,10 +28,12 @@ function App() {
   return (
     loading ? (
       <div className="center">
-        <ReactLoading
-          type={"spin"}
-          color={"#21BE72"}
-        />
+        <div className="centered">
+          <ReactLoading
+            type={"spin"}
+            color={"#21BE72"}
+          />
+        </div>
         <p>{loadingLabel}</p>
       </div>
     ) : (
