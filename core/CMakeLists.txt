@@ -9,9 +9,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 
 include_directories(${Boost_INCLUDE_DIRS})
 find_package(Boost REQUIRED COMPONENTS system)
+find_package(tinyxml2 CONFIG REQUIRED)
 
 file(GLOB SOURCES src/*.cpp src/*/*.cpp src/*/*/*.cpp)
 add_executable(core ${SOURCES})
 
-target_link_libraries(core ${Boost_SYSTEM_LIBRARY})
-target_precompile_headers(core PRIVATE src/core.hpp <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
+target_link_libraries(core ${Boost_SYSTEM_LIBRARY} tinyxml2::tinyxml2)
+target_precompile_headers(core PRIVATE src/core.hpp <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp> <tinyxml2.h>)

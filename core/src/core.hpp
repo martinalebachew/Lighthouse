@@ -6,6 +6,7 @@ This file defines the enrty point for Lighthouse KMS server.
 */
 
 #pragma once
+#include "database/database.hpp"
 #include "kms/request.hpp"
 #include "kms/response.hpp"
 #include "rpc/control.hpp"

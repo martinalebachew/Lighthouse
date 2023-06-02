@@ -13,6 +13,9 @@ int main(int argc, const char* argv[]) {
     << "(C) Martin Alebachew, 2023\n"
     << std::endl;
 
+  Database database("../../KMSData.xml");
+  std::cout << "[XML] Database loaded." << std::endl;
+
   boost::asio::io_context ioContext;
   tcp::acceptor acceptor(ioContext, tcp::endpoint(tcp::v4(), port));
   std::cout << "[TCP] Listening on port " << port << std::endl;
@@ -47,7 +50,7 @@ int main(int argc, const char* argv[]) {
     // Print client information summary
     std::cout
       << "\n=================== " << peerEndpoint << " ===================\n"
-      << "Edition:         " << "N/A" << "\n"
+      << "Edition:         " << database.getEditionBySkuID(kmsRequest.ActID) << "\n"
       << "Machine Name:    " << kmsRequest.GetWorkstationName() << "\n"
       << "Machine ID:      " << kmsRequest.CMID.toString() << "\n"
       << "KMS Version:     " << "6.0" << "\n"
