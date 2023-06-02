@@ -15,8 +15,8 @@ export interface IActivationInfo {
   clientMachineID: string;
   activationInterval: string;
   renewalInterval: string;
-  kmsHostMachineName: string;
-  kmsHostMachineAddress: string;
+  kmsHostMachineRegistered: string;
+  kmsHostMachineActivated: string;
   kmsHostMachineEPID: string;
 }
 
@@ -41,8 +41,8 @@ export async function getActivationInfo() : Promise<IActivationInfo> {
         clientMachineID: licenseDict["Client Machine ID (CMID)"],
         activationInterval: licenseDict["Activation interval"],
         renewalInterval: licenseDict["Renewal interval"],
-        kmsHostMachineName: licenseDict["Registered KMS machine name"],
-        kmsHostMachineAddress: licenseDict["KMS machine IP address"],
+        kmsHostMachineRegistered: licenseDict["Registered KMS machine name"],
+        kmsHostMachineActivated: licenseDict["KMS machine IP address"],
         kmsHostMachineEPID: licenseDict["KMS machine extended PID"]
       };
 
@@ -51,11 +51,14 @@ export async function getActivationInfo() : Promise<IActivationInfo> {
   });
 }
 
-export async function forceActivate() : Promise<boolean> {
+export async function forceActivate(address: string) : Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
-    exec("cscript %windir%\\System32\\slmgr.vbs /ato", (error, stdout, stderr) => {
-      resolve(!error && stdout.includes("Product activated successfully."));
-    })
+    sudoExec(`cscript %windir%\\System32\\slmgr.vbs /skms ${address}`, sudoOptions, (error, stdout, stderr) => {
+      if (error || !stdout.includes("Key Management Service machine name set to")) resolve(false);
+      exec("cscript %windir%\\System32\\slmgr.vbs /ato", (error, stdout, stderr) => {
+        resolve(!error && stdout.includes("Product activated successfully."));
+      });
+    });
   });
 }
 
@@ -63,6 +66,14 @@ export async function rearm() : Promise<boolean> {
   return new Promise<boolean>((resolve, reject) => {
     sudoExec("cscript %windir%\\System32\\slmgr.vbs /rearm", sudoOptions, (error, stdout, stderr) => {
       resolve(!error && stdout.includes("Command completed successfully."));
+    });
+  });
+}
+
+export async function installProductKey(gvlk: string) : Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    sudoExec(`cscript %windir%\\System32\\slmgr.vbs /ipk ${gvlk}`, sudoOptions, (error, stdout, stderr) => {
+      resolve(!error && stdout.includes("Installed product key"));
     })
   });
 }

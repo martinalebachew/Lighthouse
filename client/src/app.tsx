@@ -8,7 +8,6 @@ import ReactLoading from "react-loading";
 import { theme } from "./theme";
 import { ThemeProvider } from "@mui/material/styles";
 
-
 import { IActivationInfo } from "./helpers/activation";
 import Main from "./components/main";
 
@@ -18,13 +17,13 @@ function App() {
   const [loadingLabel, setLoadingLabel] = useState("Loading...");
 
   const [refreshData, setRefreshData] = useState(true);
-  useMemo(() => {
+  useMemo(function() {
     activation.getInfo()
     .then((activationInfo: IActivationInfo) => {
       setActivationData(activationInfo);
       setLoading(false);
     });
-   }, [refreshData]);
+  }, [refreshData]);
   
   return (
     loading ? (
