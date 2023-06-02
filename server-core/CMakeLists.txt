@@ -6,13 +6,14 @@ project(core C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 
-include_directories(${Boost_INCLUDE_DIRS})
-find_package(Boost REQUIRED COMPONENTS system)  # thread regex
-
-set(used_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY}
-
 file(GLOB CORE_SOURCES src/core.cpp src/*/*.cpp src/*/*/*.cpp)
 add_executable(core ${CORE_SOURCES})
 
-target_link_libraries(core ${used_libs})
-target_precompile_headers(core PUBLIC src/core.hpp PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
+include_directories(${Boost_INCLUDE_DIRS})
+find_package(Boost REQUIRED COMPONENTS system)  # thread regex
+find_package(tinyxml2 CONFIG REQUIRED)
+
+set(used_boost_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY}
+
+target_link_libraries(core ${used_boost_libs} tinyxml2::tinyxml2)
+target_precompile_headers(core PUBLIC src/core.hpp PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp> <tinyxml2.h>)
