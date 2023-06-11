@@ -51,8 +51,12 @@ bin
 *.out
 *.app
 
-# Visual Studio Code
+# IDEs
 .vscode
+.vs
+obj
+bin
+*.user
 
 # Logs
 logs
