@@ -9,6 +9,18 @@ Easily activate Windows & Office for free!
 
 ## Building Lighthouse
 ### Server
+#### MacOS, Linux And Other Unix-Like Machines:
+`mkdir build && cd build`
+
+`cmake ..`
+
+`make`
+
+Compiled binaries are present under Commandeer/bin.
+
+#### Windows Machines:
+
+
 ### Client
 
 ## How does it work?
