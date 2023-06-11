@@ -7,6 +7,13 @@ This file implements the enrty point for Lighthouse KMS server.
 
 #include "core.hpp"
 
+std::string operator*(std::string rep, int n) {
+  if (n < 0) return rep;
+  std::string output = "";
+  while (n--) output += rep;
+  return output;
+}
+
 int main(int argc, const char* argv[]) {
   std::cout
     << "Lighthouse Core\n"
@@ -48,14 +55,21 @@ int main(int argc, const char* argv[]) {
     std::cout << "[TCP] Closed connection from " << peerEndpoint << std::endl;
 
     // Print client information summary
+    constexpr int LineWidth = 54;
+    std::stringstream peerStream;
+    peerStream << peerEndpoint;
+    std::string peerString = peerStream.str();
+    std::string paddingString = (std::string) "=" * ((LineWidth - peerString.size() - 2) / 2);
+    std::string peerHeader = paddingString + " " + peerString + " " + paddingString;
+
     std::cout
-      << "\n=================== " << peerEndpoint << " ===================\n"
+      << "\n" << peerHeader << "\n"
       << "Edition:         " << database.getEditionBySkuID(kmsRequest.ActID) << "\n"
       << "Machine Name:    " << kmsRequest.GetWorkstationName() << "\n"
       << "Machine ID:      " << kmsRequest.CMID.toString() << "\n"
       << "KMS Version:     " << "6.0" << "\n"
       << "Virtual Machine: " << (kmsRequest.VMInfo ? "Yes" : "No") << "\n"
-      << "=======================================================\n";
+      << (std::string) "=" * peerHeader.size() << "\n";
   }
 
   return 0;
