@@ -17,5 +17,7 @@ using boost::asio::ip::tcp;
 using namespace RPC;
 
 constexpr int port = 1688; // Default KMS port
+constexpr int LineWidth = 54; // Summary Section
 
+std::string operator*(std::string rep, int n);
 int main(int argc, const char *argv[]);

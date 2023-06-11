@@ -3,6 +3,13 @@
 
 #include "core.hpp"
 
+std::string operator*(std::string rep, int n) {
+  if (n < 0) return rep;
+  std::string output = "";
+  while (n--) output += rep;
+  return output;
+}
+
 int main(int argc, const char *argv[]) {
   std::cout << "Lighthouse Server Core\n"
             << "(C) Martin Alebachew, 2023\n"
@@ -43,12 +50,18 @@ int main(int argc, const char *argv[]) {
     std::cout << "[TCP] Closed connection from " << peerEndpoint << std::endl;
 
     // 5. Print client information summary
-    std::cout << "\n=================== " << peerEndpoint << " ===================\n" // TODO: Align printing
+    std::stringstream peerStream;
+    peerStream << peerEndpoint;
+    std::string peerString = peerStream.str();
+    std::string paddingString = (std::string)"=" * ((LineWidth - peerString.size() - 2) / 2);
+    std::string peerHeader = paddingString + " " + peerString + " " + paddingString;
+
+    std::cout << "\n" << peerHeader << "\n"
               << "Edition:         " << database.getEditionBySkuID(kmsRequest.ActID) << "\n"
               << "Machine Name:    " << kmsRequest.GetWorkstationName() << "\n"
               << "Machine ID:      " << kmsRequest.CMID.toString() << "\n"
               << "KMS Version:     " << "6.0" << "\n"
               << "Virtual Machine: " << (kmsRequest.VMInfo ? "Yes" : "No") << "\n"
-              << "=======================================================\n";
+              << (std::string)"=" * peerHeader.size() << "\n";
   }
 }
