@@ -70,6 +70,7 @@
             viewActivationDetailsToolStripMenuItem.Name = "viewActivationDetailsToolStripMenuItem";
             viewActivationDetailsToolStripMenuItem.Size = new Size(194, 22);
             viewActivationDetailsToolStripMenuItem.Text = "View Activation Details";
+            viewActivationDetailsToolStripMenuItem.Click += viewActivationDetailsToolStripMenuItem_Click;
             // 
             // installProductKeyToolStripMenuItem
             // 
