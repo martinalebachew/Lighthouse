@@ -9,7 +9,7 @@ namespace client.Utilities
 {
     internal class Run
     {
-        public static string Executable(string executable, string arguments)
+        public static string Executable(string executable, string arguments, bool administrator = false)
         {
             Process process = new Process();
             process.StartInfo.FileName = executable;
@@ -17,6 +17,8 @@ namespace client.Utilities
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
             process.StartInfo.RedirectStandardOutput = true;
+            if (administrator) process.StartInfo.Verb = "runas";
+
             process.Start();
 
             StreamReader reader = process.StandardOutput;
@@ -26,9 +28,9 @@ namespace client.Utilities
             return output;
         }
 
-        public static string CScript(string command)
+        public static string CScript(string command, bool administrator = false)
         {
-            return Executable("cscript", command);
+            return Executable("cscript", command, administrator);
         }
     }
 }

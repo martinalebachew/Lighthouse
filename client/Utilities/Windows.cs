@@ -41,7 +41,7 @@ namespace client.Utilities
             }
         }
 
-        public static ActivationDetails getActivationDetails()
+        public static ActivationDetails GetActivationDetails()
         {
             Dictionary<string, string> rawDetails = new Dictionary<string, string>();
             foreach (string line in Run.CScript(scriptPath + "/dli").Split("\r\n"))
@@ -51,6 +51,12 @@ namespace client.Utilities
             }
 
             return new ActivationDetails(rawDetails);
+        }
+
+        public static bool SetKMSHost(string ip, int port = 1688)
+        {
+            string output = Run.CScript(scriptPath + $"/skms {ip}:{port}", true);
+            return output.Contains("successfully");
         }
     }
 }

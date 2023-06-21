@@ -30,11 +30,13 @@
         {
             menuStrip = new MenuStrip();
             windowsToolStripMenuItem = new ToolStripMenuItem();
+            setKMSHostToolStripMenuItem = new ToolStripMenuItem();
             activateWindowsToolStripMenuItem = new ToolStripMenuItem();
             viewActivationDetailsToolStripMenuItem = new ToolStripMenuItem();
             installProductKeyToolStripMenuItem = new ToolStripMenuItem();
             removeProductKeyToolStripMenuItem = new ToolStripMenuItem();
             officeToolStripMenuItem = new ToolStripMenuItem();
+            setKMSHostToolStripMenuItem1 = new ToolStripMenuItem();
             activateVolumeLicenseVersionToolStripMenuItem = new ToolStripMenuItem();
             locateVolumeLicenseVersionToolStripMenuItem = new ToolStripMenuItem();
             downloadVolumeLicenseVersionToolStripMenuItem = new ToolStripMenuItem();
@@ -54,10 +56,17 @@
             // 
             // windowsToolStripMenuItem
             // 
-            windowsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { activateWindowsToolStripMenuItem, viewActivationDetailsToolStripMenuItem, installProductKeyToolStripMenuItem, removeProductKeyToolStripMenuItem });
+            windowsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setKMSHostToolStripMenuItem, activateWindowsToolStripMenuItem, viewActivationDetailsToolStripMenuItem, installProductKeyToolStripMenuItem, removeProductKeyToolStripMenuItem });
             windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             windowsToolStripMenuItem.Size = new Size(68, 20);
             windowsToolStripMenuItem.Text = "Windows";
+            // 
+            // setKMSHostToolStripMenuItem
+            // 
+            setKMSHostToolStripMenuItem.Name = "setKMSHostToolStripMenuItem";
+            setKMSHostToolStripMenuItem.Size = new Size(194, 22);
+            setKMSHostToolStripMenuItem.Text = "Set KMS Host";
+            setKMSHostToolStripMenuItem.Click += setKMSHostToolStripMenuItem_Click;
             // 
             // activateWindowsToolStripMenuItem
             // 
@@ -86,10 +95,16 @@
             // 
             // officeToolStripMenuItem
             // 
-            officeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { activateVolumeLicenseVersionToolStripMenuItem, locateVolumeLicenseVersionToolStripMenuItem, downloadVolumeLicenseVersionToolStripMenuItem, installVolumeLicenseVersionToolStripMenuItem });
+            officeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { setKMSHostToolStripMenuItem1, activateVolumeLicenseVersionToolStripMenuItem, locateVolumeLicenseVersionToolStripMenuItem, downloadVolumeLicenseVersionToolStripMenuItem, installVolumeLicenseVersionToolStripMenuItem });
             officeToolStripMenuItem.Name = "officeToolStripMenuItem";
             officeToolStripMenuItem.Size = new Size(51, 20);
             officeToolStripMenuItem.Text = "Office";
+            // 
+            // setKMSHostToolStripMenuItem1
+            // 
+            setKMSHostToolStripMenuItem1.Name = "setKMSHostToolStripMenuItem1";
+            setKMSHostToolStripMenuItem1.Size = new Size(254, 22);
+            setKMSHostToolStripMenuItem1.Text = "Set KMS Host";
             // 
             // activateVolumeLicenseVersionToolStripMenuItem
             // 
@@ -155,5 +170,7 @@
         private ToolStripMenuItem installVolumeLicenseVersionToolStripMenuItem;
         private ToolStripMenuItem activateVolumeLicenseVersionToolStripMenuItem;
         private ToolStripMenuItem activateWindowsToolStripMenuItem;
+        private ToolStripMenuItem setKMSHostToolStripMenuItem;
+        private ToolStripMenuItem setKMSHostToolStripMenuItem1;
     }
 }
