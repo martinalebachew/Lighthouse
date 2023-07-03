@@ -11,6 +11,8 @@ This file defines the RPC request PDU wrapper struct.
 #include "shared.hpp"
 #include <vector>
 
+#pragma pack(1) // Required for RPC data layout
+
 typedef u_int16 p_context_id_t;
 
 namespace RPC::PDU {
@@ -43,5 +45,5 @@ struct Request {
   std::vector<byte> stub;
 
   Request(const std::vector<byte> &rawPDU);
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 } // namespace RPC::PDU

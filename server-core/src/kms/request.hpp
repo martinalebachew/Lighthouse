@@ -12,10 +12,12 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 #include "sha256.hpp"
 #include <vector>
 
+#pragma pack(1) // Required for RPC data layout
+
 struct VERSION {
   WORD Minor;
   WORD Major;
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 
 namespace KMS {
 struct Request {
@@ -51,5 +53,5 @@ struct Request {
 
   Request(std::vector<byte> stub);
   std::string GetWorkstationName();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 } // namespace KMS

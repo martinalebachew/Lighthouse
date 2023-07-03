@@ -14,6 +14,8 @@ This files defines the RPC bindack PDU wrapper struct.
 #include <limits>
 #include <random>
 
+#pragma pack(1) // Required for RPC data layout
+
 struct port_any_t {
   u_int16 length;  // Includes null terminator
   char *port_spec; /* port heap-allocated string spec */
@@ -24,8 +26,7 @@ struct port_any_t {
     port_spec = (char *)malloc(length);
     snprintf(port_spec, length, "%d", port);
   }
-} __attribute__((
-    packed)); // Disabling compiler alignment in favor of RPC alignment.;
+};
 
 enum struct p_provider_reason_t : u_int16 {
   reason_not_specified,
@@ -45,16 +46,14 @@ struct p_result_t {
   p_provider_reason_t reason; /* only relevant if result != acceptance */
   p_syntax_id_t
       transfer_syntax; /* tr syntax selected 0 if result not accepted */
-} __attribute__((
-    packed)); // Disabling compiler alignment in favor of RPC alignment.;
+};
 
 struct p_result_list_t {
   u_int8 n_results;      /* count */
   u_int8 reserved = 0;   /* alignment pad, m.b.z. */
   u_int16 reserved2 = 0; /* alignment pad, m.b.z. */
   p_result_t *p_results; // Heap-allocated array
-} __attribute__((
-    packed)); // Disabling compiler alignment in favor of RPC alignment.;
+};
 
 // TODO: account for different representation in format label
 const std::vector<byte> NDR_32_V2_TRANSFER_SYNTAX = {
@@ -94,5 +93,5 @@ struct BindAck {
   BindAck(Bind &bind, u_int16 port);
   ~BindAck();
   std::vector<byte> toBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 } // namespace RPC::PDU

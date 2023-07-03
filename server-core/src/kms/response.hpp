@@ -14,6 +14,8 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 #include <vector>
 #include <cstdint>
 
+#pragma pack(1) // Required for RPC data layout
+
 namespace KMS {
 struct Response {
   /* NOTE
@@ -51,5 +53,5 @@ struct Response {
 
   Response(KMS::Request &request);
   std::vector<byte> toEncryptedBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 } // namespace KMS

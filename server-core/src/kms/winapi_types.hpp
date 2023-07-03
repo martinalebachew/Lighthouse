@@ -9,6 +9,8 @@ This file defines the WinAPI types required for KMS.
 #include <cstdint>
 #include <iostream>
 
+#pragma pack(1) // Required for RPC data layout
+
 typedef uint16_t WORD;
 typedef uint32_t DWORD;
 typedef char16_t WCHAR;
@@ -22,9 +24,9 @@ struct GUID {
   byte      Data4[8];
 
   std::string toString();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 
 struct FILETIME {
   DWORD dwLowDateTime;
   DWORD dwHighDateTime;
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};

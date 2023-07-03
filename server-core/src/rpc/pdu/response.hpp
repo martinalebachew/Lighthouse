@@ -12,6 +12,8 @@ This files defines the RPC response PDU wrapper struct.
 #include "../uuid.hpp"
 #include <vector>
 
+#pragma pack(1) // Required for RPC data layout
+
 namespace RPC::PDU {
 struct Response {
   /* NOTE
@@ -39,5 +41,5 @@ struct Response {
 
   Response(Request &request, std::vector<byte> responseStub);
   std::vector<byte> toBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment.
+};
 } // namespace RPC::PDU
