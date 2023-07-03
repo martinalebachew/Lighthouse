@@ -6,6 +6,7 @@ This file defines the RPC Response PDU struct.
 */
 
 #pragma once
+#pragma pack(push, 1)
 #include "../primitives.hpp"
 #include "../uuid.hpp"
 #include "request.hpp"
@@ -39,5 +40,7 @@ struct Response {
 
   Response(Request &request, std::vector<byte> responseStub);
   std::vector<byte> toBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 } // namespace RPC::PDU
+
+#pragma pack(pop)

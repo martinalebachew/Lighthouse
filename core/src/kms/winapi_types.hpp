@@ -6,6 +6,7 @@ This file defines the WinAPI types required for KMS.
 */
 
 #pragma once
+#pragma pack(push, 1)
 #include <cstdint>
 #include <cstdio>
 #include <string>
@@ -25,9 +26,11 @@ struct GUID {
   byte Data4[8];
 
   std::string toString();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 
 struct FILETIME {
   DWORD dwLowDateTime;
   DWORD dwHighDateTime;
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
+
+#pragma pack(pop)

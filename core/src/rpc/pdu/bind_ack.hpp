@@ -6,6 +6,7 @@ This file defines the RPC BindAck PDU struct.
 */
 
 #pragma once
+#pragma pack(push, 1)
 #include "../primitives.hpp"
 #include "bind.hpp"
 #include "shared.hpp"
@@ -24,7 +25,7 @@ struct port_any_t {
     port_spec = (char*)malloc(length);
     snprintf(port_spec, length, "%d", port);
   }
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 
 enum struct p_provider_reason_t : u_int16 {
   reason_not_specified,
@@ -43,14 +44,14 @@ struct p_result_t {
   p_cont_def_result_t result;
   p_provider_reason_t reason;
   p_syntax_id_t transfer_syntax;
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 
 struct p_result_list_t {
   u_int8 n_results; // Number of items
   u_int8 reserved = 0;
   u_int16 reserved2 = 0;
-  p_result_t* p_results;   // Heap-allocated array
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+  p_result_t* p_results; // Heap-allocated array
+};
 
 namespace RPC::PDU {
 struct BindAck {
@@ -82,5 +83,7 @@ struct BindAck {
   BindAck(Bind &bind, u_int16 port);
   ~BindAck();
   std::vector<byte> toBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 } // namespace RPC::PDU
+
+#pragma pack(pop)

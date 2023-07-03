@@ -6,6 +6,7 @@ This file defines the RPC Request PDU struct.
 */
 
 #pragma once
+#pragma pack(push, 1)
 #include "../primitives.hpp"
 #include "../uuid.hpp"
 #include "shared.hpp"
@@ -41,5 +42,7 @@ struct Request {
   std::vector<byte> stub;
 
   Request(const std::vector<byte> &rawPDU);
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 } // namespace RPC::PDU
+
+#pragma pack(pop)

@@ -7,6 +7,7 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 */
 
 #pragma once
+#pragma pack(push, 1)
 #include "crypto.hpp"
 #include "hmac.hpp"
 #include "request.hpp"
@@ -52,5 +53,7 @@ struct Response {
 
   Response(KMS::Request &request);
   std::vector<byte> toEncryptedBuffer();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 } // namespace KMS
+
+#pragma pack(pop)

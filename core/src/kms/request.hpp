@@ -7,6 +7,7 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 */
 
 #pragma once
+#pragma pack(push, 1)
 #include "crypto.hpp"
 #include "winapi_types.hpp"
 #include <string>
@@ -15,7 +16,7 @@ This file includes modified code from vlmcsd/kms.h by Wind4.
 struct VERSION {
   WORD Minor;
   WORD Major;
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 
 namespace KMS {
 struct Request {
@@ -53,5 +54,7 @@ struct Request {
 
   Request(std::vector<byte> stub);
   std::string GetWorkstationName();
-} __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
+};
 } // namespace KMS
+
+#pragma pack(pop)
