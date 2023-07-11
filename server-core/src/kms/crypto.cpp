@@ -99,7 +99,7 @@ void AesInitKey(AesCtx *Ctx, std::vector<BYTE> key)
 		temp = Ctx->Key[ i - 1 ];
 
 		if ( ( i % RijndaelKeyDwords ) == 0 )
-			temp = std::byteswap( SubDword( ROR32( std::byteswap(temp), 24)  ) ^ RCon[ i / RijndaelKeyDwords ] );
+			temp = bswap_32( SubDword( ROR32( bswap_32(temp), 24)  ) ^ RCon[ i / RijndaelKeyDwords ] );
 
 		Ctx->Key[ i ] = Ctx->Key[ i - RijndaelKeyDwords ] ^ temp;
 	}

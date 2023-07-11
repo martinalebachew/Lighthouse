@@ -9,7 +9,7 @@ This file contains modified Wind4/vlmcsd implementations of AES.
 #include "winapi_types.hpp"
 #include <cstdint>
 #include <cstring>
-#include <bit>
+#include <byteswap.h>
 
 #define AES_BLOCK_BYTES (16)
 #define AES_BLOCK_WORDS (AES_BLOCK_BYTES / sizeof(DWORD))

@@ -8,7 +8,7 @@ This file contains modified Wind4/vlmcsd implementation of SHA256.
 #pragma once
 #include "winapi_types.hpp"
 #include "crypto.hpp"
-#include <bit>
+#include <byteswap.h>
 #include <cstring>
 
 

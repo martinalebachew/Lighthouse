@@ -52,7 +52,7 @@ static void Sha256ProcessBlock(Sha256Ctx *Ctx, BYTE *block)
 
 	for (i = 0; i < 16; i++)
 		//w[ i ] = GET_UAA32BE(block, i);
-		w[i] = std::byteswap(((DWORD*)block)[i]);
+		w[i] = bswap_32(((DWORD*)block)[i]);
 
 	for (i = 16; i < 64; i++)
 		w[ i ] = SI4(w[ i - 2 ]) + w[ i - 7 ] + SI3(w[ i - 15 ]) + w[ i - 16 ];
@@ -125,12 +125,12 @@ void Sha256Finish(Sha256Ctx *Ctx, BYTE *hash)
 	}
 
 	//PUT_UAA64BE(Ctx->Buffer, (unsigned long long)(Ctx->Len * 8), 7);
-	((uint64_t*)Ctx->Buffer)[7] = std::byteswap((uint64_t)Ctx->Len << 3);
+	((uint64_t*)Ctx->Buffer)[7] = bswap_32((uint64_t)Ctx->Len << 3);
 	Sha256ProcessBlock(Ctx, Ctx->Buffer);
 
 	for (i = 0; i < 8; i++)
 		//PUT_UAA32BE(hash, Ctx->State[i], i);
-		((DWORD*)hash)[i] = std::byteswap(Ctx->State[i]);
+		((DWORD*)hash)[i] = bswap_32(Ctx->State[i]);
 
 }
 
