@@ -11,9 +11,7 @@ add_executable(core ${CORE_SOURCES})
 
 include_directories(${Boost_INCLUDE_DIRS})
 find_package(Boost REQUIRED COMPONENTS system)  # thread regex
-find_package(tinyxml2 CONFIG REQUIRED)
-
 set(used_boost_libs ${Boost_SYSTEM_LIBRARY})  # ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY}
+target_link_libraries(core ${used_boost_libs})
 
-target_link_libraries(core ${used_boost_libs} tinyxml2::tinyxml2)
-target_precompile_headers(core PUBLIC src/core.hpp PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp> <tinyxml2.h>)
+target_precompile_headers(core PUBLIC src/core.hpp PRIVATE <iostream> <vector> <bit> <cstring> <cstdint> <iomanip> <cstdlib> <boost/asio.hpp>)
