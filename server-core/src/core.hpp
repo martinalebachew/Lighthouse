@@ -9,7 +9,6 @@
 #include "rpc/pdu/response.hpp"
 #include "kms/request.hpp"
 #include "kms/response.hpp"
-#include "database/database.hpp"
 #include <boost/asio.hpp>
 #include <iostream>
 
