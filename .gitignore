@@ -50,3 +50,10 @@ build
 *.exe
 *.out
 *.app
+
+# Visual Studio Code
+.vscode
+
+# JetBrains IDEs
+.idea
+.cache
