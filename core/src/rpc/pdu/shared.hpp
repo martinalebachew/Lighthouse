@@ -8,6 +8,16 @@ This file defines RPC PDU shared types.
 #pragma once
 #include "../primitives.hpp"
 
+// PFC_FLAGS
+#define PFC_FIRST_FRAG      0x01
+#define PFC_LAST_FRAG       0x02
+#define PFC_PENDING_CANCEL  0x04
+#define PFC_RESERVED_1      0x08
+#define PFC_CONC_MPX        0x10
+#define PFC_DID_NOT_EXECUTE 0x20
+#define PFC_MAYBE           0x40
+#define PFC_OBJECT_UUID     0x80
+
 namespace RPC::PDU {
 enum struct Type : u_int8 {
   request,
