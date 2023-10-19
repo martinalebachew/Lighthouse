@@ -45,7 +45,7 @@ struct Bind {
   u_int8 rpc_vers = 5;
   u_int8 rpc_vers_minor = 0;
   Type PTYPE = Type::bind;
-  u_int8 pfc_flags;
+  u_int8 pfc_flags = PFC_FIRST_FRAG | PFC_LAST_FRAG;
   byte packed_drep[4]; // NDR data rep format label
   u_int16 frag_length;
   u_int16 auth_length = 0;
