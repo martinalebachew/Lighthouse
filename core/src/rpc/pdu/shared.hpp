@@ -1,8 +1,8 @@
-// types.hpp
+// shared.hpp
 // (C) Martin Alebachew, 2023
 
 /*
-This file defines RPC PDU Type values.
+This file defines RPC PDU shared types.
 */
 
 #pragma once

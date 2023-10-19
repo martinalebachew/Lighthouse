@@ -8,7 +8,7 @@ This file defines the RPC Bind PDU struct.
 #pragma once
 #include "../primitives.hpp"
 #include "../uuid.hpp"
-#include "types.hpp"
+#include "shared.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <vector>

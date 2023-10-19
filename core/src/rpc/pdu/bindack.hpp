@@ -8,7 +8,7 @@ This file defines the RPC BindAck PDU struct.
 #pragma once
 #include "../primitives.hpp"
 #include "bind.hpp"
-#include "types.hpp"
+#include "shared.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <limits>
