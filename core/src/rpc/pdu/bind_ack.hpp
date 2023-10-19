@@ -1,4 +1,4 @@
-// bindack.hpp
+// bind_ack.hpp
 // (C) Martin Alebachew, 2023
 
 /*
