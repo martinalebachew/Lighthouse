@@ -12,6 +12,7 @@ This file defines the RPC BindAck PDU struct.
 #include <cstdlib>
 #include <cstring>
 #include <limits>
+#include <random>
 
 struct port_any_t {
   u_int16 length;  // Includes null terminator
@@ -77,5 +78,63 @@ struct BindAck {
 
   // Presentation context result list, including hints, variable size
   p_result_list_t p_result_list;
+
+  BindAck(Bind &bind, u_int16 port) : sec_addr(port) {
+    // TODO: Implement custom data representation that allows us to discard
+    // endianess conversion when casting to a buffer or now, we'll copy
+    // the data representation of the client, as specified in the Bind PDU
+    memcpy(packed_drep, bind.packed_drep, 4);
+
+    call_id = bind.call_id; // This value is set by the client
+
+    // Doesn't matter beacuse the server doesn't support fragmentation and reassembly,
+    // yet this is the correct implementation of those fields:
+
+    // Set the max transmit frag to the max receive frag of the client
+    max_xmit_frag = bind.max_recv_frag;
+
+    // Set the max receive frag to the max transmit frag of the client
+    max_recv_frag = bind.max_xmit_frag;
+
+    // This value is set by the client
+    assoc_group_id = bind.assoc_group_id;
+
+    // If the value is 0, the client is asking for a new association group
+    if (!assoc_group_id) {
+      // TODO: Add proper implementation of random number generation
+      // TODO: Keep track of assoc_group_id in conversation / connection manager of whole server
+      srand((unsigned)time(NULL));
+      assoc_group_id = (u_int32)rand();
+    }
+
+    // Allocate memory for the results list
+    p_result_list.n_results = bind.p_context_elem.n_context_elem;
+    p_result_list.p_results =
+      (p_result_t*)malloc(p_result_list.n_results * sizeof(p_result_t));
+
+    // TODO: Implement proper support for multiple transfer syntaxes
+    // For now, assuming one transfer syntax per context element
+
+    // Accept NDR32 transfer syntax and reject all others, including bind time
+    // feature negotiation that requires alter_context and alter_context_resp PDUs
+    for (int i = 0; i < p_result_list.n_results; i++) {
+      if (!memcmp(
+            &bind.p_context_elem.p_cont_elem[i].transfer_syntaxes[0],
+            NDR_32_V2_TRANSFER_SYNTAX.data(), NDR_32_V2_TRANSFER_SYNTAX.size()
+          )) {
+        p_result_list.p_results[i].result = p_cont_def_result_t::acceptance;
+        p_result_list.p_results[i].transfer_syntax =
+          bind.p_context_elem.p_cont_elem[i].transfer_syntaxes[0];
+      } else {
+        p_result_list.p_results[i].result = p_cont_def_result_t::provider_rejection;
+        p_result_list.p_results[i].reason =
+          p_provider_reason_t::proposed_transfer_syntaxes_not_supported;
+      }
+    }
+  }
+
+  ~BindAck() {
+    free(p_result_list.p_results);
+  }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace RPC::PDU
