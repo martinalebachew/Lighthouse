@@ -74,5 +74,15 @@ struct Request {
 
     // TODO: Validate KMS version 6.0
   }
+
+  std::string GetWorkstationName() {
+    std::string name = "";
+    for (int i = 0; i < 64; i++) {
+      if (WorkstationName[i] == 0) break;
+      name += WorkstationName[i];
+    }
+
+    return name;
+  }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 } // namespace KMS
