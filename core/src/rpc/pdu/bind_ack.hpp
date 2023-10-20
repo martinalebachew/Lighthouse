@@ -91,6 +91,9 @@ struct BindAck {
     // the data representation of the client, as specified in the Bind PDU
     memcpy(packed_drep, bind.packed_drep, 4);
 
+    // Adjust the multiplex flag according to the Bind PDU
+    if (bind.pfc_flags & PFC_CONC_MPX) pfc_flags |= PFC_CONC_MPX;
+
     call_id = bind.call_id; // This value is set by the client
 
     // Doesn't matter beacuse the server doesn't support fragmentation and reassembly,
