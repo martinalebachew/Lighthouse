@@ -11,10 +11,18 @@ This file defines the RPC BindAck PDU struct.
 #include "types.hpp"
 #include <cstdlib>
 #include <cstring>
+#include <limits>
 
 struct port_any_t {
-  u_int16 length;          // Includes null terminator
-  char port_spec[];        // Port heap-allocated string spec
+  u_int16 length;  // Includes null terminator
+  char* port_spec; // Port heap-allocated string spec
+
+  port_any_t(u_int16 port) {
+    // TODO: Account for non-ascii representation in format label
+    length = (int)log10(port) + 2; // Account for null terminator
+    port_spec = (char*)malloc(length);
+    snprintf(port_spec, length, "%d", port);
+  }
 } __attribute__((packed)); // Disabling compiler alignment in favor of RPC alignment
 
 enum struct p_provider_reason_t : u_int8 {
