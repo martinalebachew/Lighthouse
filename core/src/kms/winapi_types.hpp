@@ -14,7 +14,7 @@ typedef uint32_t DWORD;
 typedef unsigned char byte;
 typedef byte BYTE;
 
-typedef wchar_t WCHAR;
+typedef char16_t WCHAR;
 
 struct GUID {
   unsigned long Data1;
