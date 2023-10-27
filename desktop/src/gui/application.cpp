@@ -17,7 +17,7 @@ Application::Application() {
   overlay_ = Overlay::Create(window_, 1, 1, 0, 0);
   overlay_->Resize(window_->width(), window_->height());
 
-  overlay_->view()->LoadURL("file:///index.html");
+  overlay_->view()->LoadURL("file:///D:\\projects\\Lighthouse\\desktop\\webapp\\build\\index.html");
   window_->Show();
 
   app_->set_listener(this);
