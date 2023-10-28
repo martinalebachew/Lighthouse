@@ -202,6 +202,15 @@
         border-radius: .75rem;
         white-space: nowrap;
         cursor: pointer;
+        transition: background-color 125ms ease-in-out;
+    }
+
+    .button:hover {
+        background-color: var(--status-green);
+    }
+
+    .button:last-child:hover {
+        background-color: var(--status-red);
     }
 
     .button:not(:last-child) {
