@@ -10,7 +10,7 @@
     <section class="status--container">
         <div class="status">
             <div class="status__indicator"></div>
-            <p class="status__name">Systems</p>
+            <p class="status__name">All Systems Functional</p>
         </div>
         <div class="status">
             <div class="status__indicator"></div>
@@ -29,43 +29,43 @@
         <div class="information--column">
             <h2 class="information__title">Client Information</h2>
             <ul class="information__list">
-                <li>Lorem, ipsum.</li>
-                <li>At, consequuntur?</li>
-                <li>Veritatis, hic?</li>
-                <li>Autem, explicabo.</li>
-                <li>Quidem, quibusdam.</li>
-                <li>Reiciendis, reprehenderit.</li>
-                <li>Illum, autem!</li>
+                <li>Machine Name</li>
+                <li>Activation Status</li>
+                <li>Edition</li>
+                <li>Method</li>
+                <li>Last Renewal</li>
+                <li>Next Renewal</li>
+                <li>Interval</li>
             </ul>
             <ul class="information__list">
-                <li>Lorem, ipsum.</li>
-                <li>Rem, nam.</li>
-                <li>Ad, dolorem.</li>
-                <li>Delectus, earum.</li>
-                <li>Optio, ipsa?</li>
-                <li>Rem, omnis?</li>
-                <li>Eum, natus.</li>
+                <li>DESKTOP-M127APQ</li>
+                <li>Licensed</li>
+                <li>Windows 10 Education</li>
+                <li>Lighthouse KMS</li>
+                <li>12 October 2022</li>
+                <li>2 February 2023</li>
+                <li>Approx. 4 Months</li>
             </ul>
         </div>
         <article class="information--column">
             <h2 class="information__title">Server Information</h2>
             <ul class="information__list">
-                <li>Lorem, ipsum.</li>
-                <li>Dignissimos, at.</li>
-                <li>Pariatur, saepe.</li>
-                <li>Hic, sapiente?</li>
-                <li>Exercitationem, ea?</li>
-                <li>Repudiandae, qui.</li>
-                <li>Earum, laboriosam.</li>
+                <li>Version</li>
+                <li>KMS</li>
+                <li>Virtual IP</li>
+                <li>Core Container</li>
+                <li>Database</li>
+                <li>Updates</li>
+                <li>Logs</li>
             </ul>
             <ul class="information__list">
-                <li>Lorem, ipsum.</li>
-                <li>Odio, similique!</li>
-                <li>Quaerat, omnis.</li>
-                <li>Possimus, eveniet.</li>
-                <li>Vel, aliquam.</li>
-                <li>Nobis, deserunt?</li>
-                <li>Omnis, cupiditate?</li>
+                <li>Lighthouse 1.0</li>
+                <li>6.0</li>
+                <li>192.168.1.27</li>
+                <li>Online</li>
+                <li>KMSData 1.0</li>
+                <li>Latest Version</li>
+                <li>Click to view</li>
             </ul>
         </article>
     </section>
