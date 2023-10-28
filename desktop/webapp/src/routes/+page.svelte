@@ -95,9 +95,10 @@
         --secondary-clr: #fefefe;
         --accent-clr: #3b3f45;
 
-        --fs-small: 1.25rem;
-        --fs-medium: calc(var(--fs-small) * 1.618);
-        --fs-big: calc(var(--fs-medium) * 1.618);
+        --fs-buttons: 17.72px;
+        --fs-small: 17.727px;
+        --fs-medium: 18.68px;
+        --fs-big: 43.275px;
 
         --status-green: #21be72;
         --status-yellow: #eec83f;
@@ -117,8 +118,10 @@
     }
 
     main {
-        padding: 2rem;
+        padding: 45.9px;
         padding-bottom: 0;
+        font-family: var(--font-family);
+        font-size: var(--fs-small);
     }
 
     main > * {
@@ -127,8 +130,8 @@
 
     /* title */
     .title {
-        font-family: var(--font-family);
         font-size: var(--fs-big);
+        font-weight: bold;
         color: var(--secondary-clr);
     }
 
@@ -143,7 +146,6 @@
     .status {
         display: flex;
         align-items: center;
-        font-family: var(--font-family);
         font-size: var(--fs-small);
         color: var(--secondary-clr);
         white-space: nowrap;
@@ -161,7 +163,6 @@
     /* information */
     .information {
         display: flex;
-        font-family: var(--font-family);
         color: var(--secondary-clr);
     }
 
@@ -179,6 +180,7 @@
     .information__title {
         width: 100%;
         grid-column: span 2;
+        font-size: var(--fs-medium);
     }
 
     .information__list {
@@ -197,7 +199,7 @@
         padding: .5rem 1rem;
         background-color: var(--accent-clr);
         border: none;
-        font-family: var(--font-family);
+        font-size: var(--fs-buttons);
         color: var(--secondary-clr);
         border-radius: .75rem;
         white-space: nowrap;
