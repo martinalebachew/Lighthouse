@@ -8,23 +8,20 @@ This file implements the XML database interface.
 #include "database.hpp"
 
 Database::Database(std::string path) {
-  XMLDocument data;
-  data.LoadFile(path.c_str());
+  xml_document doc;
+  xml_parse_result loaded = doc.load_file(path.c_str());
 
-  XMLElement* Windows = data.FirstChildElement("KmsData")
-    ->FirstChildElement("AppItems")->FirstChildElement("AppItem");
+  if (!loaded) {
+    throw std::runtime_error("[XML] Failed to load database file.");
+  }
 
-  XMLElement* KmsItem = Windows->FirstChildElement();
-
-  while (KmsItem) {
-    XMLElement* SkuItem = KmsItem->FirstChildElement();
-
-    while (SkuItem) {
-      SkuIDStringToEdition[SkuItem->Attribute("Id")] = SkuItem->Attribute("DisplayName");
-      SkuItem = SkuItem->NextSiblingElement();
-    }
-
-    KmsItem = KmsItem->NextSiblingElement();
+  xml_node data = doc.child("KMSData");
+  xpath_node_set sku_xpath_set = data.select_nodes("SkuItem");
+  
+  for (xpath_node sku_xpath_node : sku_xpath_set) {
+    xml_node sku_node = sku_xpath_node.node();
+    SkuIDStringToEdition[sku_node.attribute("Id").value()] =
+      sku_node.attribute("DisplayName").value();
   }
 }
 

@@ -8,10 +8,10 @@ This file defines the XML database interface.
 #pragma once
 #include "../kms/winapi_types.hpp"
 #include <map>
+#include <pugixml.hpp>
 #include <string>
-#include <tinyxml2.h>
 
-using namespace tinyxml2;
+using namespace pugi;
 
 class Database {
 private:
