@@ -115,6 +115,8 @@
 
     :global(body) {
         background-color: var(--primary-clr);
+        user-select: none;
+        cursor: default;
     }
 
     main {
@@ -196,6 +198,7 @@
     }
 
     .button {
+        cursor: pointer;
         padding: .5rem 1rem;
         background-color: var(--accent-clr);
         border: none;
