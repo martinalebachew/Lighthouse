@@ -5,6 +5,7 @@
     <title>Lighthouse</title>
 </svelte:head>
 
+<div class="bar"></div>
 <main>
     <h1 class="title">Lighthouse</h1>
     <section class="status--container">
@@ -14,7 +15,7 @@
         </div>
         <div class="status">
             <div class="status__indicator"></div>
-            <p class="status__name">Virtual Lan</p>
+            <p class="status__name">Virtual LAN</p>
         </div>
         <div class="status">
             <div class="status__indicator"></div>
@@ -119,15 +120,19 @@
         cursor: default;
     }
 
-    main {
-        padding: 45.9px;
-        padding-bottom: 0;
-        font-family: var(--font-family);
-        font-size: var(--fs-small);
+    .bar {
+        position: absolute;
+        inset: 0;
+        height: 100vh;
+        width: 26px;
+        background-color: var(--accent-clr);
     }
 
-    main > * {
-        margin-bottom: 3rem;
+    main {
+        position: relative;
+        padding: 46px 60px 46px 72px;
+        font-family: var(--font-family);
+        font-size: var(--fs-small);
     }
 
     /* title */
@@ -135,29 +140,33 @@
         font-size: var(--fs-big);
         font-weight: bold;
         color: var(--secondary-clr);
+        margin-bottom: 30px;
     }
 
     /* status */
     .status--container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        column-gap: 4rem;
+        column-gap: 62px;
         width: fit-content;
+        margin-bottom: 34px;
     }
 
     .status {
         display: flex;
-        align-items: center;
+        margin-bottom: 5px;
         font-size: var(--fs-small);
         color: var(--secondary-clr);
         white-space: nowrap;
+        letter-spacing: -.18px;
     }
 
     .status__indicator {
         border-radius: 50%;
-        height: 1ch;
-        width: 1ch;
-        margin-right: 1ch;
+        height: 13px;
+        width: 13px;
+        margin-right: 10px;
+        margin-top: 2px;
         background-color: var(--status-green);
         box-shadow: 0 0 .25rem var(--status-green);
     }
@@ -166,28 +175,37 @@
     .information {
         display: flex;
         color: var(--secondary-clr);
+        margin-bottom: 50px;
     }
 
     .information--column {
         display: grid;
         grid-template-columns: repeat(2, 50%);
         justify-items: baseline;
-        column-gap: 4rem;
+        column-gap: 32px;
     }
 
     .information--column:first-child {
-        margin-right: 6rem;
+        margin-right: 122px;
+    }
+
+    .information--column:nth-child(2) {
+        column-gap: 60px;
     }
 
     .information__title {
         width: 100%;
         grid-column: span 2;
         font-size: var(--fs-medium);
+        letter-spacing: -.1px;
     }
 
     .information__list {
         list-style: none;
         white-space: nowrap;
+        line-height: 26px;
+        letter-spacing: -.275px;
+        margin-top: 3px;
     }
 
     /* buttons */
@@ -199,7 +217,7 @@
 
     .button {
         cursor: pointer;
-        padding: .5rem 1rem;
+        padding: .5rem 14.48375px;
         background-color: var(--accent-clr);
         border: none;
         font-size: var(--fs-buttons);
@@ -208,6 +226,7 @@
         white-space: nowrap;
         cursor: pointer;
         transition: background-color 125ms ease-in-out;
+        letter-spacing: .3px;
     }
 
     .button:hover {
@@ -219,10 +238,10 @@
     }
 
     .button:not(:last-child) {
-        margin-right: 1rem;
+        margin-right: 19.27px;
     }
     
     .button:nth-child(3) {
-        margin-left: 4rem;
+        margin-left: 267.76px;
     }
 </style>
